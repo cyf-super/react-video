@@ -26,6 +26,8 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+    'no-console': 'off',
     //  允许 在ts、tsx 中书写 jsx
     'react/jsx-filename-extension': [
       2,

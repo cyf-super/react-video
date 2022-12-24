@@ -13,4 +13,5 @@ dist 
 /bin
 # .eslintrc.cjs
 *.config.js
+commitlint.config.cjs
 vite.config.ts
