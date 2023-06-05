@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 
 const lazyLoad = (moduleName: string) => {
-  const Module = lazy(() => import(`@/pages/${moduleName}/home/index.tsx`))
+  const Module = lazy(() => import(`@/pages/${moduleName}/index.tsx`))
   return <Module />
 }
 
