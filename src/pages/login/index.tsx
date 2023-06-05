@@ -90,7 +90,7 @@ export default function Login() {
       <ModalFrame>
         <img className="logo" src={logo} alt="" />
         <div className="main">
-          <h2>数学课堂</h2>
+          <h2 className="text-3xl italic font-bold">数学课堂</h2>
           <br />
           <LoginForm />
         </div>

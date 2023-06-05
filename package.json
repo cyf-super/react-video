@@ -25,6 +25,7 @@
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@vitejs/plugin-react": "^3.0.0",
+    "autoprefixer": "^10.4.14",
     "commitlint": "^17.3.0",
     "eslint": "^8.0.1",
     "eslint-config-airbnb": "^19.0.4",
@@ -42,6 +43,7 @@
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
     "sass": "^1.57.1",
+    "tailwindcss": "^3.3.2",
     "typescript": "*",
     "vite": "^4.0.0",
     "vite-plugin-imp": "^2.3.1"
