@@ -1,5 +1,5 @@
 import { useRoutes } from 'react-router-dom'
-import './App.css'
+import './css/App.css'
 import routes from './router/index'
 
 function App() {
