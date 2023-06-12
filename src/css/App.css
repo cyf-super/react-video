@@ -2,7 +2,7 @@ html {
   font-family: cursive;
 }
 
-@media screen and (max-width: 1000px) {
+/* @media screen and (max-width: 1000px) {
   html {
     font-size: 14px !important;
   }
@@ -30,4 +30,4 @@ html {
   html {
     font-size: 22px !important;
   }
-}
+} */

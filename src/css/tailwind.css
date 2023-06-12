@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+
+  .flex-center {
+    @apply flex justify-between items-center;
+  }
+
+  /* 垂直居中 */
+  .absolute-center {
+    @apply sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-y-1/2 sm:-translate-x-1/2;
+  }
+
+  /* 添加border */
+  .after-border {
+    @apply after:content-[''] after:w-screen after:absolute after:bottom-0 after:left-0 after:border-b;
+  }
+}

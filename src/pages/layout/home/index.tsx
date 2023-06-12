@@ -1,3 +1,5 @@
+import { AppHeader } from '@/components/header/index'
+
 export default function Home() {
-  return <h1>首页</h1>
+  return <AppHeader />
 }
