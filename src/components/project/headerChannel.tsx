@@ -30,7 +30,7 @@ export const HeaderChannel = () => (
     <h3 className="text-center mt-8 text-md sm:text-xl">
       Search projects by title or filter by category
     </h3>
-    <div className="flex justify-between m-8">
+    <div className="flex justify-between my-8">
       <SearchInput />
       <Filter />
     </div>

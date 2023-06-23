@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import logo from '@/assets/logo.svg'
 
 export const AppHeader = () => (
-  <motion.nav className="sm:container sm:mx-auto after-border relative shadow-[0_11px_11px_-15px_#3b82f6]">
+  <motion.nav className="sm:container sm:mx-auto after-border relative shadow-[0_11px_11px_-15px_#3b82f6] overflow-hidden">
     <div className="flex-center max-w-screen-lg sm:max-w-screen-xl py-5">
       <div className="flex-center max-sm:w-full">
         <div className="logo">
