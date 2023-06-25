@@ -28,6 +28,7 @@ module.exports = {
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'no-console': 'off',
+    "no-param-reassign": ["error", { "props": false }],
     //  允许 在ts、tsx 中书写 jsx
     'react/jsx-filename-extension': [
       2,
