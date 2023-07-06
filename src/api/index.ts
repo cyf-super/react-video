@@ -1,3 +1,11 @@
 import request from '@/utils/request'
 
-export const getData = () => request.get('/api/json')
+/**
+ * 登陆
+ * @param params
+ * @returns
+ */
+export const loginService = async (params: LoginParamsType) => {
+  const res = await request.post('/api/login', params)
+  return res
+}
