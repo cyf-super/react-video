@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { FireTwoTone, SafetyCertificateTwoTone } from '@ant-design/icons'
 import { Input, Checkbox, Button } from 'antd'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
@@ -8,13 +7,12 @@ import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { motion } from 'framer-motion'
 import logo from '../../assets/logo.webp'
 import { storage } from '@/utils/storage'
+import { useLogin } from './hooks/useLogin'
 
 function LoginForm() {
-  const navigate = useNavigate()
-
   const [checked, setChecked] = useState(storage.get('_checked') || false)
   const [info, setInfo] = useState({
-    userName: storage.get('_info')?.userName || '',
+    username: storage.get('_info')?.username || '',
     password: storage.get('_info')?.password || '',
   })
 
@@ -27,7 +25,7 @@ function LoginForm() {
   }, [checked, info])
 
   const changeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInfo({ ...info, userName: e.target.value })
+    setInfo({ ...info, username: e.target.value })
   }
 
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,11 +38,10 @@ function LoginForm() {
     storage.set('_checked', check)
   }
 
+  const { login } = useLogin()
   const enterLogin = () => {
     console.log(info)
-    if (info.userName === 'admin' && info.password === '123456') {
-      navigate('/')
-    }
+    login(info)
   }
 
   return (
@@ -54,7 +51,7 @@ function LoginForm() {
           size="large"
           placeholder="账号"
           prefix={<FireTwoTone />}
-          value={info.userName}
+          value={info.username}
           onChange={changeUserName}
         />
       </div>

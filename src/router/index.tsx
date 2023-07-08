@@ -5,10 +5,10 @@ const lazyLoad = (moduleName: string) => {
   return <Module />
 }
 
-const loadLayout = (moduleName: string) => {
-  const Module = lazy(() => import(`@/pages/layout/${moduleName}/index.tsx`))
-  return <Module />
-}
+// const loadLayout = (moduleName: string) => {
+//   const Module = lazy(() => import(`@/pages/layout/${moduleName}/index.tsx`))
+//   return <Module />
+// }
 
 interface Router {
   name: string
@@ -26,7 +26,12 @@ const routes: Router[] = [
   {
     path: '/',
     name: 'home',
-    element: loadLayout('home'),
+    element: lazyLoad('home'),
+  },
+  {
+    path: '/manage',
+    name: 'management',
+    element: lazyLoad('management'),
   },
 ]
 
