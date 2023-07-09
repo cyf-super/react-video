@@ -13,6 +13,10 @@ export default {
         '2xl': '8rem',
       },
     },
+    colors: {
+      shallowPurple: '#9555ff',
+      deepPurple: '#7131d9',
+    },
   },
   plugins: [],
 }
