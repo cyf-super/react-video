@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { Drawer, Upload } from 'antd'
+import { Button, Drawer, Upload } from 'antd'
 import { InboxOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
+import { UploadProgress } from './uploadProgress'
+import { useUpload } from '@/context/UploadProvider'
 
 interface UploadDrawerType {
   open: boolean
@@ -15,6 +17,8 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
     hidePopver()
   }
 
+  const { setUploadData } = useUpload()
+
   const prop: UploadProps = {
     name: 'file',
     multiple: true,
@@ -27,6 +31,7 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
       setUploadNum((preVal) => {
         if (preVal === fileList.length - 1) {
           console.log(fileList)
+          setUploadData(fileList)
           return 0
         }
         return preVal + 1
@@ -34,6 +39,7 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
       return false
     },
   }
+
   return (
     <Drawer
       title="上传文件"
@@ -41,19 +47,19 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
       size="large"
       open={open}
       onClose={onClose}
+      className="overflow-hidden"
     >
-      <Upload.Dragger {...prop}>
+      <Upload.Dragger {...prop} height={200}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
-        <p className="ant-upload-text">
-          Click or drag file to this area to upload
-        </p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibited from
-          uploading company data or other banned files.
-        </p>
+        <p className="ant-upload-text">单击或拖动文件到此区域进行上传</p>
+        <p className="ant-upload-hint">支持视频、图片、pdf</p>
       </Upload.Dragger>
+      <UploadProgress />
+      <div className="text-right pt-5 px-[-24] border-t border-gray border-solid">
+        <Button type="primary">确认上传</Button>
+      </div>
     </Drawer>
   )
 }

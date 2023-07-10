@@ -20,4 +20,8 @@
   .after-border {
     @apply after:content-[''] after:w-screen after:absolute after:bottom-0 after:left-0 after:border-b;
   }
+
+  .gray-border {
+    @apply border border-gray border-solid rounded-md;
+  }
 }

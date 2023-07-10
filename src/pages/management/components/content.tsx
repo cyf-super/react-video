@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Button } from 'antd'
 import { CategoryModal } from './categoryModal'
-import { UploadDrawer } from './uploadDrawer'
+import { UploadDrawer } from '@/components/uploadDrawer'
+import { UploadProvider } from '@/context/UploadProvider'
 
 export const Content = () => {
   const [open, showModal] = useState(false)
@@ -36,7 +37,9 @@ export const Content = () => {
         handleOk={createCategory}
         handleCancel={cancelCategory}
       />
-      <UploadDrawer open={openPopver} hidePopver={hidePopver} />
+      <UploadProvider>
+        <UploadDrawer open={openPopver} hidePopver={hidePopver} />
+      </UploadProvider>
     </>
   )
 }
