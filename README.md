@@ -10,7 +10,7 @@
 
 后端：koa
 
-- 地址[https://github.com/cyf-super/mediaHub-backend]
+- [地址](https://github.com/cyf-super/mediaHub-backend)
 
 <p>
 
@@ -30,4 +30,10 @@ yarn dev
 yarn build:css
 ```
 
-实时编译新增的 tailwind css
+编译项目中用到的`tailwind css`，输出文件为`index.css`
+
+若需要实时编译`tailwind css`，则加上`--watch`
+
+```
+yarn build:css --watch
+```
