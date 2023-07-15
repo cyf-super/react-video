@@ -4,15 +4,17 @@
 
 <p>
 
-### 技术栈
+## 技术栈
 
 - react、TailWind CSS、react-query、react-router、react-redux 等
 
-后端：koa 地址[https://github.com/cyf-super/mediaHub-backend]
+后端：koa
+
+- 地址[https://github.com/cyf-super/mediaHub-backend]
 
 <p>
 
-### 使用
+## 使用
 
 ```
 // 安装依赖

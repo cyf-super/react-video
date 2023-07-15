@@ -1,10 +1,10 @@
 import Axios, { InternalAxiosRequestConfig } from 'axios'
-import { storage } from './storage'
+import { LStorage } from '@cyf-super/utils'
 
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
-  const token = storage.get('__token')
+  const token = LStorage.get('_token')
   if (token) {
-    config.headers.authorization = token
+    config.headers.authorization = `Bearer ${token}`
   }
 
   config.headers.Accept = 'application/json'
@@ -14,7 +14,7 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
 
 const axios = Axios.create({
   baseURL: '',
-  timeout: 10000,
+  timeout: 100_000,
   withCredentials: false,
 })
 

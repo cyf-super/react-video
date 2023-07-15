@@ -17,8 +17,9 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
     hidePopver()
   }
 
-  const { setUploadData } = useUpload()
+  const { dispatchUpload, selectFiles, clearFiles } = useUpload()
 
+  console.log(11111111)
   const prop: UploadProps = {
     name: 'file',
     multiple: true,
@@ -31,7 +32,7 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
       setUploadNum((preVal) => {
         if (preVal === fileList.length - 1) {
           console.log(fileList)
-          setUploadData(fileList)
+          selectFiles(fileList)
           return 0
         }
         return preVal + 1
@@ -57,8 +58,11 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
         <p className="ant-upload-hint">支持视频、图片、pdf</p>
       </Upload.Dragger>
       <UploadProgress />
-      <div className="text-right pt-5 px-[-24] border-t border-gray border-solid">
-        <Button type="primary">确认上传</Button>
+      <div className="flex justify-between pt-5 px-[-24] border-t border-gray border-solid">
+        <Button onClick={() => clearFiles()}>清除</Button>
+        <Button type="primary" onClick={() => dispatchUpload()}>
+          确认上传
+        </Button>
       </div>
     </Drawer>
   )

@@ -1,5 +1,4 @@
 import {
-  useState,
   useMemo,
   useCallback,
   useContext,
@@ -7,34 +6,60 @@ import {
   FC,
   ReactNode,
 } from 'react'
+import { UploadFile } from 'antd'
+import {
+  useUploadVideo,
+  UploadDataType,
+} from '@/pages/management/hooks/useUploadVideo'
 
 export interface UploadContextType {
-  uploadData: any[]
-  openPopver: Boolean
-  setUploadData: (files: any[]) => void
-  setPopver: (key: boolean) => void
+  uploadData: UploadDataType[]
+  removeFile: (file: UploadFile) => void
+  dispatchUpload: () => void
+  selectFiles: (files: UploadFile[]) => void
+  clearFiles: () => void
 }
 
 const UploadContext = createContext<UploadContextType | {}>({})
 
 export const UploadProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [uploadData, setUploadData] = useState([])
-  const [openPopver, showPopver] = useState(false)
-  const setPopver = useCallback(
-    (show: boolean) => {
-      showPopver(show)
+  const { dispatchUpload, state, dispatch } = useUploadVideo()
+  console.log('🚀 ~ state:', state)
+
+  const selectFiles = useCallback(
+    (files: UploadFile[]) => {
+      dispatch({
+        type: 'ADD',
+        files,
+      })
     },
-    [showPopver]
+    [dispatch]
   )
+  const removeFile = useCallback(
+    (file: UploadFile) => {
+      dispatch({
+        type: 'REMOVE',
+        file,
+      })
+    },
+    [dispatch]
+  )
+
+  const clearFiles = useCallback(() => {
+    dispatch({
+      type: 'CLEAR',
+    })
+  }, [dispatch])
 
   const cacheValue = useMemo(
     () => ({
-      uploadData,
-      openPopver,
-      setUploadData,
-      setPopver,
+      ...state,
+      removeFile,
+      dispatchUpload,
+      selectFiles,
+      clearFiles,
     }),
-    [uploadData, openPopver, setUploadData, setPopver]
+    [removeFile, selectFiles, dispatchUpload, clearFiles, state]
   )
   return (
     <UploadContext.Provider value={cacheValue}>
