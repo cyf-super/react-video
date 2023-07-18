@@ -1,10 +1,10 @@
 declare namespace Login {
-  interface ParamsType {
+  interface Params {
     username: string
     password: string
   }
 
-  interface ResponseType {
+  interface Response {
     token: string
     data: {
       id: number
@@ -16,9 +16,43 @@ declare namespace Login {
 }
 
 declare namespace Uplaod {
-  interface ParamsType {
+  interface Params {
     formData: FormData
     onUploadProgress: (progressEvent: AxiosProgressEvent) => void
     source: CancelToken
+  }
+
+  interface Response {
+    code: number
+    data: {
+      categories: Data[]
+      count: number
+    }
+  }
+
+  interface Data {
+    categoryId: string
+    createdAt: string
+    id: number
+    name: string
+    updatedAt: string
+  }
+}
+
+declare namespace Category {
+  interface Response {
+    code: number
+    data: {
+      categories: Data[]
+      count: number
+    }
+  }
+
+  interface Data {
+    categoryId: string
+    createdAt: string
+    id: number
+    name: string
+    updatedAt: string
   }
 }

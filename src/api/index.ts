@@ -5,8 +5,11 @@ import request from '@/utils/request'
  * @param params
  * @returns
  */
-export const loginService = async (params: Login.ParamsType) => {
-  const res = await request.post('/api/login', params)
+export const loginService = async (params: Login.Params) => {
+  const res = await request.post<Login.Response, Login.Response>(
+    '/api/login',
+    params
+  )
 
   return res
 }
@@ -14,11 +17,17 @@ export const loginService = async (params: Login.ParamsType) => {
 /**
  * 上传视频
  */
-export const uploadVideoService = async (params: Uplaod.ParamsType) =>
-  request.post('/api/upload', params.formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    onUploadProgress: params.onUploadProgress,
-    cancelToken: params.source.token,
-  })
+export const uploadVideoService = async (params: Uplaod.Params) =>
+  request.post<Uplaod.Response, Uplaod.Response>(
+    '/api/upload',
+    params.formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: params.onUploadProgress,
+      cancelToken: params.source.token,
+    }
+  )
+
+export * from './category'

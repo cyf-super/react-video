@@ -31,9 +31,7 @@ export const LayoutMan = ({
   content,
   footer,
 }: LayoutParamsType) => {
-  function onClick(key: string) {
-    clickMenuItem(key)
-  }
+  console.log(2222222)
 
   return (
     <Layout className="flex h-screen">
@@ -50,7 +48,7 @@ export const LayoutMan = ({
             defaultSelectedKeys={['1']}
             style={{ height: '100%', borderRight: 0 }}
             items={sideMemu}
-            onClick={(menuInfo) => onClick(menuInfo.key)}
+            onClick={(menuInfo) => clickMenuItem(menuInfo.key)}
           />
         </Sider>
         <Content>{content}</Content>
