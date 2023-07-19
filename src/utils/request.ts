@@ -1,4 +1,3 @@
-import { redirect } from 'react-router-dom'
 import Axios, { InternalAxiosRequestConfig } from 'axios'
 import { LStorage } from '@cyf-super/utils'
 
@@ -30,8 +29,8 @@ axios.interceptors.response.use(
     const message = error.response?.data?.message || error.message
     console.log('message ', message.status)
     console.error(message)
-    if (message.status) {
-      redirect('/login')
+    if (message.status === 401) {
+      window.location.replace('/login')
     }
     return Promise.reject(message)
   }

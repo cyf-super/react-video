@@ -47,14 +47,6 @@ export const useGetCategory = () => {
 
   const clickMenuItem = (key: string = '') => {
     navigate(`/manage/${key}`)
-    // const newCategories = categories?.map((category) => {
-    //   if (!category) return category
-    //   if (category?.key !== key) {
-    //     return { ...category, style: {} }
-    //   }
-    //   return { ...category, style: menuActiveCSS }
-    // })
-    // setCategories(newCategories)
   }
 
   return {

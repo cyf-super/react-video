@@ -1,8 +1,10 @@
 import { useReducer, useCallback } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { UploadFile } from 'antd'
+import { useParams } from 'react-router-dom'
+import type { UploadFile, MenuProps } from 'antd'
 import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
 import { uploadVideoService } from '@/api'
+import { useGetCategory } from './useCategory'
 
 export interface UploadDataType {
   file: UploadFile
@@ -23,6 +25,15 @@ interface ActionType extends Partial<UploadDataType> {
 const defaultInitialState: StateType = {
   uploadData: [],
   noUpload: [],
+}
+
+function getCategory(categories: MenuProps['items'], categoryId: string) {
+  if (!categories) return ''
+  const curCategory = categories.filter(
+    (category) => category?.key === categoryId
+  )
+
+  return curCategory[0]?.label || ''
 }
 
 const uploadDispatch = (state: StateType, action: ActionType) => {
@@ -96,6 +107,8 @@ const uploadDispatch = (state: StateType, action: ActionType) => {
 
 export const useUploadVideo = () => {
   const client = useQueryClient()
+  const { categoryId } = useParams()
+  const { categories } = useGetCategory()
 
   const [state, dispatch] = useReducer(uploadDispatch, defaultInitialState)
 
@@ -116,7 +129,9 @@ export const useUploadVideo = () => {
 
     files.forEach((file) => {
       const formData = new FormData()
-      formData.append('video', file as unknown as File)
+      formData.append('file', file as unknown as File)
+      formData.append('category', getCategory(categories, <string>categoryId))
+      formData.append('categoryId', categoryId || '')
       const source = axios.CancelToken.source()
       const onUploadProgress = (e: AxiosProgressEvent) => {
         const progress = Math.round((e.loaded / <number>e.total) * 100)

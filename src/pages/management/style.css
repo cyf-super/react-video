@@ -7,3 +7,9 @@
   flex-direction: column;
   overflow: hidden !important;
 }
+
+:where(.css-dev-only-do-not-override-1m62vyb).ant-menu-inline.ant-menu-root
+  .ant-menu-item {
+  transition: border-color 0.05s, background 0.05s,
+    padding 0.05s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
