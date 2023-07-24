@@ -56,3 +56,26 @@ declare namespace Category {
     updatedAt: string
   }
 }
+
+declare namespace File {
+  interface GetFileParams {
+    categoryId: string
+  }
+
+  interface GetFileResponse {
+    count: number
+    files: FileType[]
+  }
+
+  interface FileType {
+    id: string
+    fileId: string
+    name: string
+    size: number
+    type: string
+    path: string
+    categoryId: string
+    createdAt: string
+    updatedAt: string
+  }
+}
