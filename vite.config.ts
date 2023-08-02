@@ -14,7 +14,9 @@ export default defineConfig({
   },
   css: {
     modules: {
-      generateScopedName: 'vite_video__[folder]__[local]___[hash:base64:5]',
+      localsConvention: 'camelCase',
+      scopeBehaviour: 'local',
+      generateScopedName: '[name]_[local]_[hash:5]',
     },
     preprocessorOptions: {
       less: {

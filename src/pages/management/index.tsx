@@ -1,6 +1,5 @@
 import { LayoutMan } from '../layout'
 import { Content } from './components/content'
-import { Footer } from './components/footer'
 import { useGetCategory } from './hooks/useCategory'
 import './style.css'
 
@@ -13,7 +12,6 @@ export default function Management() {
       sideMemu={categories}
       clickMenuItem={clickMenuItem}
       content={<Content />}
-      footer={<Footer />}
     />
   )
 }

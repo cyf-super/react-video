@@ -3,6 +3,7 @@ import { Button } from 'antd'
 import { CategoryModal } from './categoryModal'
 import { UploadDrawer } from '@/components/uploadDrawer'
 import { UploadProvider } from '@/context/UploadProvider'
+import { FileTable } from './fileTable'
 
 export const Content = () => {
   const [open, showModal] = useState(false)
@@ -21,16 +22,21 @@ export const Content = () => {
   return (
     <>
       <div className="mx-10 my-5">
-        <Button
-          type="primary"
-          onClick={() => showPopver(true)}
-          className="mr-5"
-        >
-          上传
-        </Button>
-        <Button type="primary" onClick={() => showModal(true)}>
-          新建分类
-        </Button>
+        <div>
+          <Button
+            type="primary"
+            onClick={() => showPopver(true)}
+            className="mr-5"
+          >
+            上传
+          </Button>
+          <Button type="primary" onClick={() => showModal(true)}>
+            新建分类
+          </Button>
+        </div>
+        <div>
+          <FileTable />
+        </div>
       </div>
       <CategoryModal
         open={open}
