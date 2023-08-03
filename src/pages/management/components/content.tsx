@@ -4,6 +4,7 @@ import { CategoryModal } from './categoryModal'
 import { UploadDrawer } from '@/components/uploadDrawer'
 import { UploadProvider } from '@/context/UploadProvider'
 import { FileTable } from './fileTable'
+import './fileTable.module.css'
 
 export const Content = () => {
   const [open, showModal] = useState(false)

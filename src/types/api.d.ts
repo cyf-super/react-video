@@ -63,15 +63,19 @@ declare namespace File {
   }
 
   interface GetFileResponse {
-    count: number
-    files: FileType[]
+    code: number
+    data: {
+      count: number
+      files: FileType[]
+    }
   }
 
   interface FileType {
+    key: string
     id: string
     fileId: string
     name: string
-    size: number
+    size: number | string
     type: string
     path: string
     categoryId: string
