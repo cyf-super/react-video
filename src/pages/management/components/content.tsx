@@ -1,14 +1,22 @@
 import { useState } from 'react'
 import { Button } from 'antd'
+import { useParams } from 'react-router-dom'
 import { CategoryModal } from './categoryModal'
 import { UploadDrawer } from '@/components/uploadDrawer'
 import { UploadProvider } from '@/context/UploadProvider'
 import { FileTable } from './fileTable'
-import './fileTable.module.css'
+import { useGetFile } from '../hooks/useFiles'
+import './fileTable.css'
 
 export const Content = () => {
   const [open, showModal] = useState(false)
   const [openPopver, showPopver] = useState(false)
+
+  const { categoryId } = useParams()
+
+  const { fileData } = useGetFile({
+    categoryId,
+  } as File.GetFileParams)
 
   const cancelCategory = () => {
     showModal(false)
@@ -36,7 +44,7 @@ export const Content = () => {
           </Button>
         </div>
         <div>
-          <FileTable />
+          <FileTable fileData={fileData} />
         </div>
       </div>
       <CategoryModal

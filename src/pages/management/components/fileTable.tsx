@@ -1,8 +1,9 @@
-import { Table } from 'antd'
+import { Button, Table, Dropdown } from 'antd'
 import { useState } from 'react'
+import type { MenuProps } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
-import { useParams } from 'react-router-dom'
-import { useGetFile } from '../hooks/useFiles'
+import { EllipsisOutlined } from '@ant-design/icons'
+import { FileDataType } from '../hooks/useFiles'
 
 // interface DataType {
 //   key: React.Key
@@ -12,35 +13,57 @@ import { useGetFile } from '../hooks/useFiles'
 //   size: string
 // }
 
-const columns: ColumnsType<any> = [
+const onClick: MenuProps['onClick'] = (value) => {
+  console.log('🚀 ~ onClick ~ key:', value)
+}
+
+const items: MenuProps['items'] = [
   {
-    title: 'Name',
-    dataIndex: 'name',
+    key: '1',
+    label: <div>编辑</div>,
   },
   {
-    title: 'Type',
-    dataIndex: 'type',
-  },
-  {
-    title: 'Size',
-    dataIndex: 'size',
-  },
-  {
-    title: 'create',
-    dataIndex: 'create',
+    key: '2',
+    label: <div>删除</div>,
   },
 ]
 
-export const FileTable = () => {
+const columns: ColumnsType<any> = [
+  {
+    title: '名称',
+    dataIndex: 'name',
+  },
+  {
+    title: '类型',
+    dataIndex: 'type',
+  },
+  {
+    title: '大小',
+    dataIndex: 'size',
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'create',
+  },
+  {
+    title: '操作',
+    dataIndex: 'handle',
+    render: () => (
+      <Dropdown
+        menu={{ items, onClick }}
+        placement="bottom"
+        arrow={{ pointAtCenter: true }}
+      >
+        <Button onClick={(e) => e.preventDefault()}>
+          <EllipsisOutlined />
+        </Button>
+      </Dropdown>
+    ),
+  },
+]
+
+export const FileTable = ({ fileData }: { fileData: FileDataType[] }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
-
-  const { categoryId } = useParams()
-  console.log('🚀 ~ FileTable ~ params:', categoryId)
-
-  const { fileData } = useGetFile({
-    categoryId,
-  } as File.GetFileParams)
-  console.log('🚀 ~ FileTable ~ data:', fileData)
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys)

@@ -6,7 +6,10 @@ import { formatBytes } from '@cyf-super/utils'
 import { getFilesService } from '@/api'
 import { sliceNameType } from '@/utils/tools'
 
-type FileDataType = Pick<File.FileType, 'type' | 'size' | 'name' | 'key'> & {
+export type FileDataType = Pick<
+  File.FileType,
+  'type' | 'size' | 'name' | 'key'
+> & {
   create: string
 }
 
@@ -40,3 +43,5 @@ export const useGetFile = ({ categoryId }: File.GetFileParams) => {
     isLoading,
   }
 }
+
+export function deleteFile() {}
