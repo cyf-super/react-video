@@ -1,9 +1,16 @@
 import { Button, Table, Dropdown } from 'antd'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import type { MenuProps } from 'antd'
-import type { ColumnsType } from 'antd/es/table'
-import { EllipsisOutlined } from '@ant-design/icons'
-import { FileDataType } from '../hooks/useFiles'
+import { useSelector } from 'react-redux'
+import {
+  EllipsisOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  CheckOutlined,
+} from '@ant-design/icons'
+import { selectFiles } from '@/store/slices/fileslice'
+import { useHandleFile } from '../hooks/useFiles'
+import { columns } from '../map'
 
 // interface DataType {
 //   key: React.Key
@@ -13,62 +20,76 @@ import { FileDataType } from '../hooks/useFiles'
 //   size: string
 // }
 
-const onClick: MenuProps['onClick'] = (value) => {
-  console.log('🚀 ~ onClick ~ key:', value)
-}
-
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: <div>编辑</div>,
-  },
-  {
-    key: '2',
-    label: <div>删除</div>,
-  },
-]
-
-const columns: ColumnsType<any> = [
-  {
-    title: '名称',
-    dataIndex: 'name',
-  },
-  {
-    title: '类型',
-    dataIndex: 'type',
-  },
-  {
-    title: '大小',
-    dataIndex: 'size',
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'create',
-  },
-  {
-    title: '操作',
-    dataIndex: 'handle',
-    render: () => (
-      <Dropdown
-        menu={{ items, onClick }}
-        placement="bottom"
-        arrow={{ pointAtCenter: true }}
-      >
-        <Button onClick={(e) => e.preventDefault()}>
-          <EllipsisOutlined />
-        </Button>
-      </Dropdown>
-    ),
-  },
-]
-
-export const FileTable = ({ fileData }: { fileData: FileDataType[] }) => {
+export const FileTable = () => {
+  const fileData = useSelector(selectFiles)
+  console.log('🚀 ~ FileTable ~ fileData:', fileData)
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys)
     setSelectedRowKeys(newSelectedRowKeys)
   }
+
+  const currentFile = useRef<File.FileType>()
+  const { deleteFile, showDelIcon, setShowDelIcon } = useHandleFile()
+  const onHandleFile = (key: string, file: File.FileType) => {
+    switch (key) {
+      case '2':
+        console.log('🚀 ~ onHandleFile ~ currentFile:', currentFile)
+        currentFile.current = file
+        setShowDelIcon(true)
+        break
+      default:
+        break
+    }
+  }
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <div className="w-20">
+          <EditOutlined />
+          <span>编辑</span>
+        </div>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <div className="flex-center">
+          <div className="w-20 flex-center justify-start">
+            <DeleteOutlined />
+            <div className="text-red-600 m-1">删除</div>
+          </div>
+          {showDelIcon && (
+            <CheckOutlined
+              onClick={() => deleteFile(currentFile.current?.fileId as string)}
+            />
+          )}
+        </div>
+      ),
+    },
+  ]
+
+  const tableCol = [
+    ...columns,
+    {
+      title: '操作',
+      dataIndex: 'handle',
+      render: (key1: any, record: any) => (
+        <Dropdown
+          menu={{ items, onClick: ({ key }) => onHandleFile(key, record) }}
+          placement="bottom"
+          arrow={{ pointAtCenter: true }}
+        >
+          <Button onClick={(e) => e.preventDefault()}>
+            <EllipsisOutlined />
+          </Button>
+        </Dropdown>
+      ),
+    },
+  ]
 
   const rowSelection = {
     selectedRowKeys,
@@ -78,7 +99,7 @@ export const FileTable = ({ fileData }: { fileData: FileDataType[] }) => {
   return (
     <Table
       rowSelection={rowSelection}
-      columns={columns}
+      columns={tableCol}
       dataSource={fileData}
     />
   )

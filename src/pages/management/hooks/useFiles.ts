@@ -3,8 +3,10 @@ import { useEffect, useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import dayjs from 'dayjs'
 import { formatBytes } from '@cyf-super/utils'
+import { useDispatch } from 'react-redux'
 import { getFilesService } from '@/api'
 import { sliceNameType } from '@/utils/tools'
+import { removeFile, addFiles, setCount } from '@/store/slices/fileslice'
 
 export type FileDataType = Pick<
   File.FileType,
@@ -15,7 +17,8 @@ export type FileDataType = Pick<
 
 function formatData(files: File.FileType[]) {
   return files.map((file) => ({
-    key: file.id,
+    ...file,
+    key: file.fileId,
     type: file.type,
     create: dayjs(file.createdAt).format('YYYY-MM-DD HH:mm'),
     size: formatBytes(<number>file.size),
@@ -23,25 +26,42 @@ function formatData(files: File.FileType[]) {
   }))
 }
 
-export const useGetFile = ({ categoryId }: File.GetFileParams) => {
-  const [fileData, setFileData] = useState<FileDataType[]>([])
+const useGetFile = ({ categoryId }: File.GetFileParams) => {
+  const dispatch = useDispatch()
   const { data, isLoading } = useQuery({
-    queryKey: ['getFile'],
+    queryKey: ['getFile', categoryId],
     queryFn: async () => getFilesService({ categoryId }),
+    enabled: !!categoryId,
   })
 
   useEffect(() => {
     if (data) {
       const newData = formatData(data.data.files)
-      setFileData(newData)
+      console.log('🚀 ~ useEffect ~ newData:', newData)
+      dispatch(addFiles(newData))
+      dispatch(setCount(data.data?.count))
     }
-  }, [data])
+  }, [data, dispatch])
 
   return {
-    fileData,
-    count: data?.data.count || 0,
     isLoading,
   }
 }
 
-export function deleteFile() {}
+const useHandleFile = () => {
+  const dispatch = useDispatch()
+  const [showDelIcon, setShowDelIcon] = useState(false)
+
+  const deleteFile = (fileId: string) => {
+    dispatch(removeFile(fileId))
+    setShowDelIcon(false)
+  }
+
+  return {
+    deleteFile,
+    showDelIcon,
+    setShowDelIcon,
+  }
+}
+
+export { useGetFile, useHandleFile }

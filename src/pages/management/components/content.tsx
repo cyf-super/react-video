@@ -14,7 +14,7 @@ export const Content = () => {
 
   const { categoryId } = useParams()
 
-  const { fileData } = useGetFile({
+  useGetFile({
     categoryId,
   } as File.GetFileParams)
 
@@ -44,7 +44,7 @@ export const Content = () => {
           </Button>
         </div>
         <div>
-          <FileTable fileData={fileData} />
+          <FileTable />
         </div>
       </div>
       <CategoryModal
