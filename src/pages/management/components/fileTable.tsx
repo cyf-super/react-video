@@ -6,8 +6,8 @@ import {
   EllipsisOutlined,
   DeleteOutlined,
   EditOutlined,
-  CheckOutlined,
 } from '@ant-design/icons'
+import { DeleteModal } from './deleteModal'
 import { selectFiles } from '@/store/slices/fileslice'
 import { useHandleFile } from '../hooks/useFiles'
 import { columns } from '../map'
@@ -22,7 +22,6 @@ import { columns } from '../map'
 
 export const FileTable = () => {
   const fileData = useSelector(selectFiles)
-  console.log('🚀 ~ FileTable ~ fileData:', fileData)
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -31,17 +30,20 @@ export const FileTable = () => {
   }
 
   const currentFile = useRef<File.FileType>()
-  const { deleteFile, showDelIcon, setShowDelIcon } = useHandleFile()
+  const { deleteFile, showDeleteModal, setShowDeleteModal } = useHandleFile()
   const onHandleFile = (key: string, file: File.FileType) => {
     switch (key) {
       case '2':
-        console.log('🚀 ~ onHandleFile ~ currentFile:', currentFile)
         currentFile.current = file
-        setShowDelIcon(true)
+        setShowDeleteModal(true)
         break
       default:
         break
     }
+  }
+
+  const handleDelete = () => {
+    deleteFile(currentFile.current?.fileId as string)
   }
 
   const items: MenuProps['items'] = [
@@ -57,16 +59,9 @@ export const FileTable = () => {
     {
       key: '2',
       label: (
-        <div className="flex-center">
-          <div className="w-20 flex-center justify-start">
-            <DeleteOutlined />
-            <div className="text-red-600 m-1">删除</div>
-          </div>
-          {showDelIcon && (
-            <CheckOutlined
-              onClick={() => deleteFile(currentFile.current?.fileId as string)}
-            />
-          )}
+        <div className="w-20 flex-center justify-start">
+          <DeleteOutlined />
+          <span className="text-red-600 m-1">删除</span>
         </div>
       ),
     },
@@ -77,7 +72,7 @@ export const FileTable = () => {
     {
       title: '操作',
       dataIndex: 'handle',
-      render: (key1: any, record: any) => (
+      render: (_: unknown, record: File.FileType) => (
         <Dropdown
           menu={{ items, onClick: ({ key }) => onHandleFile(key, record) }}
           placement="bottom"
@@ -97,10 +92,17 @@ export const FileTable = () => {
   }
 
   return (
-    <Table
-      rowSelection={rowSelection}
-      columns={tableCol}
-      dataSource={fileData}
-    />
+    <>
+      <Table
+        rowSelection={rowSelection}
+        columns={tableCol}
+        dataSource={fileData}
+      />
+      <DeleteModal
+        open={showDeleteModal}
+        handleOk={handleDelete}
+        handleCancel={() => setShowDeleteModal(false)}
+      />
+    </>
   )
 }

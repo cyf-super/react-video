@@ -43,7 +43,7 @@ export const Content = () => {
             新建分类
           </Button>
         </div>
-        <div>
+        <div className="mt-8">
           <FileTable />
         </div>
       </div>

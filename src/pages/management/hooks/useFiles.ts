@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { formatBytes } from '@cyf-super/utils'
 import { useDispatch } from 'react-redux'
-import { getFilesService } from '@/api'
+import { getFilesService, deleteFilesService } from '@/api'
 import { sliceNameType } from '@/utils/tools'
 import { removeFile, addFiles, setCount } from '@/store/slices/fileslice'
 
@@ -50,17 +50,20 @@ const useGetFile = ({ categoryId }: File.GetFileParams) => {
 
 const useHandleFile = () => {
   const dispatch = useDispatch()
-  const [showDelIcon, setShowDelIcon] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const deleteFile = (fileId: string) => {
     dispatch(removeFile(fileId))
-    setShowDelIcon(false)
+    setShowDeleteModal(false)
+    deleteFilesService({
+      fileIds: [fileId],
+    })
   }
 
   return {
     deleteFile,
-    showDelIcon,
-    setShowDelIcon,
+    showDeleteModal,
+    setShowDeleteModal,
   }
 }
 

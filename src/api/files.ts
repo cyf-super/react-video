@@ -8,3 +8,13 @@ export const getFilesService = (params: File.GetFileParams) => {
     },
   })
 }
+
+export const deleteFilesService = (params: File.DeleteFilesParams) =>
+  request.delete<File.DeleteFilesResponse, File.DeleteFilesResponse>(
+    '/api/files',
+    {
+      data: {
+        ...params,
+      },
+    }
+  )

@@ -36,14 +36,18 @@ export const useGetCategory = () => {
 
   useEffect(() => {
     if (data) {
+      const firstCategoryId = data?.categories[0].categoryId
+      if (!categoryId) {
+        navigate(`/manage/${firstCategoryId}`)
+      }
       setCategories(
         formatData(
           data?.categories as Category.Data[],
-          categoryId || data?.categories[0].categoryId || ''
+          categoryId || firstCategoryId || ''
         )
       )
     }
-  }, [categoryId, data])
+  }, [categoryId, data, navigate])
 
   const clickMenuItem = (key: string = '') => {
     navigate(`/manage/${key}`)

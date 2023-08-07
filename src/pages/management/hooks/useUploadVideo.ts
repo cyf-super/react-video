@@ -106,7 +106,7 @@ export const useUploadVideo = () => {
   const { mutate: upload, data } = useMutation(uploadVideoService, {
     onSuccess(data1) {
       console.log('上传成功', data1)
-      client.invalidateQueries(['upload'])
+      client.invalidateQueries(['getFile', categoryId])
     },
     onError(err) {
       console.log('上传失败', err)

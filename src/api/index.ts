@@ -5,14 +5,8 @@ import request from '@/utils/request'
  * @param params
  * @returns
  */
-export const loginService = async (params: Login.Params) => {
-  const res = await request.post<Login.Response, Login.Response>(
-    '/api/login',
-    params
-  )
-
-  return res
-}
+export const loginService = async (params: Login.Params) =>
+  request.post<Login.Response, Login.Response>('/api/login', params)
 
 /**
  * 上传视频
