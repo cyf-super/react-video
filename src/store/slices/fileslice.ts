@@ -37,8 +37,8 @@ export const fileSlice = createSlice({
   },
 })
 
-export const selectFiles = (state) => state.files.files
-export const selectCount = (state) => state.files.count
+export const selectFiles = (state: any) => state.files.files
+export const selectCount = (state: any) => state.files.count
 
 export const { removeFile, addFiles, setCount } = fileSlice.actions
 

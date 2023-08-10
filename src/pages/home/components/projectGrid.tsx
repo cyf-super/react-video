@@ -1,16 +1,30 @@
-import { useSelector } from 'react-redux'
+import { useState } from 'react'
+// import { useSelector } from 'react-redux'
 import { HeaderChannel } from './headerChannel'
 import { Card } from './projectItem'
-import { selectFiles } from '@/store/slices/fileslice'
+import { useCard } from '../hooks/useProject'
+
+const gridDiv = `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6 sm:gap-10`
 
 export const ProjectGrid = () => {
-  const fileData = useSelector(selectFiles)
+  const [searchName, setSearchName] = useState('')
+  const [categary, setCategary] = useState('全部文件')
+
+  const { files } = useCard({
+    categoryId: '83994e35-c027-475c-889c-ad159b6fa0a0',
+  })
+
   return (
     <div className="mx-40">
-      <HeaderChannel />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6 sm:gap-10">
-        {fileData &&
-          fileData.map((card: any) => (
+      <HeaderChannel
+        searchName={searchName}
+        setSearchName={setSearchName}
+        categary={categary}
+        setCategary={setCategary}
+      />
+      <div className={gridDiv}>
+        {files &&
+          files.map((card: any) => (
             <Card
               title={card.name}
               category={card.category}
