@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 
 interface CardType {
   title: string
@@ -18,22 +17,20 @@ export const Card = ({ title, category, src, timer }: CardType) => (
       delay: 0.15,
     }}
   >
-    <Link to="/project:id">
-      <div className="rounded-xl shadow-lg hover:shadow-xl cursor-pointer mb-10 sm:mb-0 bg-secondary-light">
-        <img src={src} alt="" className="rounded-t-xl border-none" />
-        <div className="text-center py-5 mx-5">
-          <p
-            className="font-general-medium text-base md:text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
-            title={title}
-          >
-            {title}
-          </p>
-          <div className="mt-2">
-            <span>{category}</span>
-            <span className="ml-3">{timer}</span>
-          </div>
+    <div className="rounded-xl shadow-lg hover:shadow-xl cursor-pointer mb-10 sm:mb-0 bg-secondary-light">
+      <img src={src} alt="" className="rounded-t-xl border-none" />
+      <div className="text-center py-5 mx-5">
+        <p
+          className="font-general-medium text-base md:text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
+          title={title}
+        >
+          {title}
+        </p>
+        <div className="mt-2">
+          <span>{category}</span>
+          <span className="ml-3">{timer}</span>
         </div>
       </div>
-    </Link>
+    </div>
   </motion.div>
 )

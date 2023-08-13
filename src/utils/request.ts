@@ -31,6 +31,7 @@ axios.interceptors.response.use(
     console.error(message)
     if (message.status === 401) {
       window.location.replace('/login')
+      // redirect('/login')
     }
     return Promise.reject(message)
   }

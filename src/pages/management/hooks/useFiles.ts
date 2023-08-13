@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { getFilesService, deleteFilesService } from '@/api'
 import { formatFileData } from '@/utils/files'
 import { removeFile, addFiles, setCount } from '@/store/slices/fileslice'
+import { GetFunctionParams } from '@/utils/type'
 
 export type FileDataType = Pick<
   File.FileType,
@@ -13,7 +14,14 @@ export type FileDataType = Pick<
   create: string
 }
 
-const useGetFile = ({ categoryId }: File.GetFileParams) => {
+type GetFileType = GetFunctionParams<typeof getFilesService>[0]
+
+/**
+ * 获取所有文件
+ * @param categoryId：类别
+ * @returns
+ */
+const useGetFile = ({ categoryId }: GetFileType) => {
   const dispatch = useDispatch()
   const { data, isLoading } = useQuery({
     queryKey: ['getFile', categoryId],

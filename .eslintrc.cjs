@@ -43,5 +43,7 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 'off',
+    'func-names': 'off',
+    '@typescript-eslint/no-unused-expressions': 'off',
   },
 }

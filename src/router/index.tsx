@@ -27,6 +27,13 @@ const routes: Router[] = [
     path: '/',
     name: 'home',
     element: lazyLoad('home'),
+    children: [
+      {
+        path: '/home/:categoryId?',
+        name: 'home',
+        element: lazyLoad('home'),
+      },
+    ],
   },
   {
     path: '/manage/:categoryId?',
