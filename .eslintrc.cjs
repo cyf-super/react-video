@@ -45,5 +45,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'func-names': 'off',
     '@typescript-eslint/no-unused-expressions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
   },
 }

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 // import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import dayjs from 'dayjs'
 import { HeaderChannel } from './headerChannel'
 import { Card } from './projectItem'
 import { useCard } from '../hooks/useProject'
@@ -15,6 +14,7 @@ export const ProjectGrid = () => {
   const { files } = useCard({
     categoryId: categoryId as string,
   })
+  console.log('🚀 ~ ProjectGrid ~ files:', files)
 
   return (
     <div className="mx-40">
@@ -26,8 +26,9 @@ export const ProjectGrid = () => {
               title={card.name}
               category={card.category}
               src={card.path}
-              timer={dayjs(card.createdAt).format('YYYY-MM-DD HH:mm')}
+              timer={card.create}
               key={card.id}
+              fileId={card.fileId}
             />
           ))}
       </div>

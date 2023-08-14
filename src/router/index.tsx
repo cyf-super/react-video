@@ -40,6 +40,11 @@ const routes: Router[] = [
     name: 'management',
     element: lazyLoad('management'),
   },
+  {
+    path: '/view/:fileId',
+    name: 'view',
+    element: lazyLoad('view'),
+  },
 ]
 
 export default routes
