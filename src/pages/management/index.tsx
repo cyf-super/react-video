@@ -4,12 +4,12 @@ import { useGetCategory } from './hooks/useCategory'
 import './style.css'
 
 export default function Management() {
-  const { categories, clickMenuItem } = useGetCategory()
+  const { data, clickMenuItem } = useGetCategory()
   console.log(333333)
 
   return (
     <LayoutMan
-      sideMemu={categories}
+      sideMemu={data || []}
       clickMenuItem={clickMenuItem}
       content={<Content />}
     />
