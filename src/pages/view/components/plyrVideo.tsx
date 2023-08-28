@@ -1,32 +1,25 @@
-import { useRef } from 'react'
-import Plyr, { APITypes } from 'plyr-react'
+import { useEffect } from 'react'
+import Plyr from 'plyr-react'
 import 'plyr-react/plyr.css'
+import { useVideo } from '../hooks/useLoadVideo'
 
-const videoOptions = undefined
+const videoOptions = {
+  // autoplay: true,
+  volume: 0.1,
+}
 
 export const PlyrVideo = () => {
-  const ref = useRef<APITypes>(null)
+  const { ref, loadVideo } = useVideo()
 
-  const enterVideo = () => {
-    ;(ref.current?.plyr as Plyr)?.fullscreen.enter()
-  }
-
-  const make2x = () => {
-    const plyrInstance = ref.current?.plyr as Plyr
-    if (plyrInstance) plyrInstance.speed = 2
-  }
+  useEffect(() => {
+    loadVideo('/ffmpeg/1693178566333/index.m3u8')
+  }, [loadVideo])
 
   const plyrVideo = (
     <Plyr
+      id="plyr"
       ref={ref}
-      source={{
-        type: 'video',
-        sources: [
-          {
-            src: '/video/1692022900272.[4849]%20%E5%BC%80%E7%AF%87%E8%AF%8D%20%20%E8%BF%99%E4%B8%80%E6%AC%A1%EF%BC%8C%E7%9C%9F%E6%AD%A3%E5%90%83%E9%80%8F%20React%20%E7%9F%A5%E8%AF%86%E9%93%BE%E8%B7%AF%E4%B8%8E%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91.mp4',
-          },
-        ],
-      }}
+      source={{} as Plyr.SourceInfo}
       options={videoOptions}
     />
   )
@@ -34,12 +27,6 @@ export const PlyrVideo = () => {
   return (
     <div className="flex-col-center w-fu">
       <div className="w-4/6">{plyrVideo}</div>
-      <button type="button" onClick={enterVideo}>
-        fullscreen
-      </button>
-      <button type="button" onClick={make2x}>
-        2x
-      </button>
     </div>
   )
 }

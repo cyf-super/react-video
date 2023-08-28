@@ -20,6 +20,7 @@ interface StateType {
 interface ActionType extends Partial<UploadDataType> {
   type: 'ADD' | 'REMOVE' | 'CLEAR' | 'UPLOAD' | 'PROGRESS'
   files?: UploadFile[]
+  status?: Boolean
 }
 
 const defaultInitialState: StateType = {
@@ -104,15 +105,24 @@ export const useUploadVideo = () => {
   const [state, dispatch] = useReducer(uploadDispatch, defaultInitialState)
 
   const { mutate: upload, data } = useMutation(uploadVideoService, {
-    onSuccess(data1) {
-      console.log('上传成功', data1)
+    onSuccess(res) {
+      if (res.code === '12002') {
+        console.log('上传失败', res, data)
+        // dispatch({
+        //   type: 'PROGRESS',
+        //   file: <UploadFile>file,
+        //   progress: 100,
+        //   status: false
+        // })
+        return
+      }
+      console.log('上传成功', res)
       client.invalidateQueries(['getFile', categoryId])
     },
     onError(err) {
       console.log('上传失败', err)
     },
   })
-  console.log('🚀 ~ useUploadVideo ~ data:', data)
 
   const dispatchUpload = useCallback(() => {
     const files = state.noUpload
@@ -132,6 +142,7 @@ export const useUploadVideo = () => {
           type: 'PROGRESS',
           file: <UploadFile>file,
           progress,
+          status: true,
         })
       }
       upload({ formData, source, onUploadProgress })
