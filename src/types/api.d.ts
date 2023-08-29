@@ -23,7 +23,7 @@ declare namespace Uplaod {
   }
 
   interface Response {
-    code: string
+    code: number
     data: {
       categories: Data[]
       count: number
@@ -41,7 +41,7 @@ declare namespace Uplaod {
 
 declare namespace Category {
   interface Response {
-    code: string
+    code: number
     data: {
       categories: Data[]
       count: number
@@ -58,16 +58,20 @@ declare namespace Category {
 }
 
 declare namespace File {
-  interface GetFileParams {
+  interface GetFilesParams {
     categoryId: string
   }
 
-  interface GetFileResponse {
-    code: string
+  interface GetFilesResponse {
+    code: number
     data: {
       count: number
       files: FileType[]
     }
+  }
+  interface GetFileResponse {
+    code: number
+    data: FileType
   }
 
   interface FileType {
@@ -87,7 +91,7 @@ declare namespace File {
     fileIds: string[]
   }
   interface DeleteFilesResponse {
-    code: string
+    code: number
     data: {
       count: number
     }

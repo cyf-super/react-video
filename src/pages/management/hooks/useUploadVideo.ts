@@ -106,7 +106,7 @@ export const useUploadVideo = () => {
 
   const { mutate: upload, data } = useMutation(uploadVideoService, {
     onSuccess(res) {
-      if (res.code === '12002') {
+      if (res.code === 12002) {
         console.log('上传失败', res, data)
         // dispatch({
         //   type: 'PROGRESS',

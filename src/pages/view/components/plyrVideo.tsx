@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Plyr from 'plyr-react'
 import 'plyr-react/plyr.css'
 import { useVideo } from '../hooks/useLoadVideo'
+import { useLoadFile } from '../hooks/useFetch'
 
 const videoOptions = {
   // autoplay: true,
@@ -10,10 +11,13 @@ const videoOptions = {
 
 export const PlyrVideo = () => {
   const { ref, loadVideo } = useVideo()
+  const { file, isLoading } = useLoadFile()
 
   useEffect(() => {
-    loadVideo('/ffmpeg/1693178566333/index.m3u8')
-  }, [loadVideo])
+    if (file?.path) {
+      loadVideo(file.path)
+    }
+  }, [loadVideo, file])
 
   const plyrVideo = (
     <Plyr
@@ -26,7 +30,7 @@ export const PlyrVideo = () => {
 
   return (
     <div className="flex-col-center w-fu">
-      <div className="w-4/6">{plyrVideo}</div>
+      {isLoading && <div className="w-4/6">{plyrVideo}</div>}
     </div>
   )
 }

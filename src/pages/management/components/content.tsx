@@ -16,7 +16,7 @@ export const Content = () => {
 
   useGetFile({
     categoryId,
-  } as File.GetFileParams)
+  } as File.GetFilesParams)
 
   const cancelCategory = () => {
     showModal(false)

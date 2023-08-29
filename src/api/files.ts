@@ -1,8 +1,15 @@
 import request from '@/utils/request'
 
-export const getFilesService = (params: File.GetFileParams) => {
+export const getFileService = (fileId: string) =>
+  request.get<File.FileType, File.FileType>('/api/file/', {
+    params: {
+      fileId,
+    },
+  })
+
+export const getFilesService = (params: File.GetFilesParams) => {
   const { categoryId } = params
-  return request.get<File.GetFileResponse, File.GetFileResponse>('/api/files', {
+  return request.get<File.GetFilesResponse, File.FileType>('/api/files', {
     params: {
       categoryId,
     },
