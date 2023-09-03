@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom'
 import type { UploadFile } from 'antd'
 import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
 import { uploadVideoService } from '@/api'
+import { isVideoOfFile } from '@/utils/files'
+import { createFrame } from '@/utils/captureFrame'
 // import { useGetCategory } from './useCategory'
 
 export interface UploadDataType {
@@ -124,16 +126,21 @@ export const useUploadVideo = () => {
     },
   })
 
-  const dispatchUpload = useCallback(() => {
+  const dispatchUpload = useCallback(async () => {
     const files = state.noUpload
     if (!files.length) return
 
-    files.forEach((file) => {
+    for (const file of files) {
       const formData = new FormData()
       formData.append('file', file as unknown as File)
+      if (isVideoOfFile(file)) {
+        const { blob } = await createFrame(file, 0)
+        formData.append('poster', <Blob>blob)
+      }
       formData.append('name', file.name)
       formData.append('categoryId', categoryId || '')
       formData.append('fileId', file.uid)
+
       const source = axios.CancelToken.source()
       const onUploadProgress = (e: AxiosProgressEvent) => {
         const progress = Math.round((e.loaded / <number>e.total) * 100)
@@ -152,7 +159,7 @@ export const useUploadVideo = () => {
         progress: 0,
         cancel: source,
       })
-    })
+    }
   }, [state, dispatch, upload, categoryId])
 
   return {

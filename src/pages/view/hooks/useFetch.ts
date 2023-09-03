@@ -15,7 +15,7 @@ export const useLoadFile = () => {
         setNotFindFile(true)
       }
     },
-    onSettled: (res) => (res as unknown as File.GetFileResponse)?.data,
+    select: (res) => (res as unknown as File.GetFileResponse)?.data,
   })
 
   return {

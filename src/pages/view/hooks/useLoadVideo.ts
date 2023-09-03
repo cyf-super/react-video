@@ -9,7 +9,6 @@ export const useVideo = () => {
   const loadVideo = useCallback((src: string) => {
     const video = document.getElementById('plyr') as HTMLVideoElement
     const hls = new Hls()
-    // hls.loadSource('/ffmpeg/1693178566333/index.m3u8')
     hls.loadSource(src)
     hls.attachMedia(video)
     // @ts-ignore

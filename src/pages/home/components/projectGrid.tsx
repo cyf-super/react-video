@@ -20,17 +20,7 @@ export const ProjectGrid = () => {
     <div className="mx-40">
       <HeaderChannel searchName={searchName} setSearchName={setSearchName} />
       <div className={gridDiv}>
-        {files &&
-          files.map((card: any) => (
-            <Card
-              title={card.name}
-              category={card.category}
-              src={card.path}
-              timer={card.create}
-              key={card.id}
-              fileId={card.fileId}
-            />
-          ))}
+        {files && files.map((card) => <Card file={card} key={card.id} />)}
       </div>
     </div>
   )

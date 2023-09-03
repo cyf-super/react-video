@@ -12,7 +12,6 @@ const videoOptions = {
 export const PlyrVideo = () => {
   const { ref, loadVideo } = useVideo()
   const { file, isLoading } = useLoadFile()
-
   useEffect(() => {
     if (file?.path) {
       loadVideo(file.path)
@@ -30,7 +29,7 @@ export const PlyrVideo = () => {
 
   return (
     <div className="flex-col-center w-fu">
-      {isLoading && <div className="w-4/6">{plyrVideo}</div>}
+      {!isLoading && <div className="w-4/6">{plyrVideo}</div>}
     </div>
   )
 }

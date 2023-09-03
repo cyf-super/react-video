@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { formatBytes } from '@cyf-super/utils'
+import type { UploadFile } from 'antd'
 
 export const sliceNameType = (name: string) => {
   const nameArr = name.split('.')
@@ -19,3 +20,6 @@ export function formatFileData(files: File.FileType[]) {
     name: sliceNameType(file.name)[0] || '',
   }))
 }
+
+export const isVideoOfFile = (file: UploadFile) =>
+  file.type?.startsWith('video')

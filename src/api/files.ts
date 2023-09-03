@@ -9,11 +9,14 @@ export const getFileService = (fileId: string) =>
 
 export const getFilesService = (params: File.GetFilesParams) => {
   const { categoryId } = params
-  return request.get<File.GetFilesResponse, File.FileType>('/api/files', {
-    params: {
-      categoryId,
-    },
-  })
+  return request.get<File.GetFilesResponse, File.GetFilesResponse>(
+    '/api/files',
+    {
+      params: {
+        categoryId,
+      },
+    }
+  )
 }
 
 export const deleteFilesService = (params: File.DeleteFilesParams) =>

@@ -1,8 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+import image from '@/assets/base64/image.json'
+
 export default {
   content: ['./src/**/*.{tsx,,ts,jsx,js}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        video: image.video,
+      },
+    },
     container: {
       center: true,
       padding: {

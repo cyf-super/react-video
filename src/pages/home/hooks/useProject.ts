@@ -10,7 +10,7 @@ export interface CategoryOptions {
   id: string
 }
 
-export const useCard = (options: File.GetFileParams) => {
+export const useCard = (options: File.GetFilesParams) => {
   const [files, setFiles] = useState<File.FileType[]>([])
   const [count, setCount] = useState<number>(0)
   const { categoryId } = options
