@@ -32,7 +32,6 @@ const useGetFile = ({ categoryId }: GetFileType) => {
   useEffect(() => {
     if (data) {
       const newData = formatFileData(data.data.files)
-      console.log('🚀 ~ useEffect ~ newData:', newData)
       dispatch(addFiles(newData))
       dispatch(setCount(data.data?.count))
     }

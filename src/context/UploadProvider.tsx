@@ -24,8 +24,6 @@ const UploadContext = createContext<UploadContextType | {}>({})
 
 export const UploadProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { dispatchUpload, state, dispatch } = useUploadVideo()
-  console.log('🚀 ~ state:', state)
-
   const selectFiles = useCallback(
     (files: UploadFile[]) => {
       dispatch({

@@ -14,8 +14,6 @@ export const ProjectGrid = () => {
   const { files } = useCard({
     categoryId: categoryId as string,
   })
-  console.log('🚀 ~ ProjectGrid ~ files:', files)
-
   return (
     <div className="mx-40">
       <HeaderChannel searchName={searchName} setSearchName={setSearchName} />

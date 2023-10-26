@@ -109,7 +109,7 @@ export const useUploadVideo = () => {
   const { mutate: upload, data } = useMutation(uploadVideoService, {
     onSuccess(res) {
       if (res.code === 12002) {
-        console.log('上传失败', res, data)
+        console.error('上传失败', res, data)
         // dispatch({
         //   type: 'PROGRESS',
         //   file: <UploadFile>file,
@@ -118,11 +118,10 @@ export const useUploadVideo = () => {
         // })
         return
       }
-      console.log('上传成功', res)
       client.invalidateQueries(['getFile', categoryId])
     },
     onError(err) {
-      console.log('上传失败', err)
+      console.error('上传失败', err)
     },
   })
 

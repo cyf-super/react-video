@@ -40,7 +40,6 @@ function LoginForm() {
 
   const { login } = useLogin()
   const enterLogin = () => {
-    console.log(info)
     login(info)
   }
 

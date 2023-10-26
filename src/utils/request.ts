@@ -20,18 +20,12 @@ const axios = Axios.create({
 
 axios.interceptors.request.use(authRequestInterceptor)
 axios.interceptors.response.use(
-  (response) => {
-    console.log('🚀 ~ response.data:', response.data)
-
-    return response.data
-  },
+  (response) => response.data,
   (error) => {
     const message = error.response?.data?.message || error.message
-    console.log('message ', message.status)
     console.error(message)
     if (message.status === 401) {
       window.location.replace('/login')
-      // redirect('/login')
     }
     return Promise.reject(message)
   }

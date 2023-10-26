@@ -8,7 +8,6 @@ export const useLogin = () => {
 
   const { mutate: login } = useMutation(loginService, {
     onSuccess: (res) => {
-      console.log('登陆成功', res)
       LStorage.set({
         key: '_token',
         value: res.token,
@@ -20,7 +19,7 @@ export const useLogin = () => {
       navigate('/')
     },
     onError(err) {
-      console.log('登陆失败', err)
+      console.error('登陆失败', err)
     },
   })
 

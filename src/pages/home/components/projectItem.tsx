@@ -21,7 +21,6 @@ export const Card = ({ file }: { file: CardType }) => {
     type,
     videoImgPath,
   } = file
-  console.log('🚀 ~ Card ~ file:', file)
   const onView = () => {
     const url = `${window.location.origin}/view/${fileId}`
     openNewTag(url)

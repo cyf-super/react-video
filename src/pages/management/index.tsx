@@ -5,7 +5,6 @@ import './style.css'
 
 export default function Management() {
   const { data, clickMenuItem } = useGetCategory()
-  console.log(333333)
 
   return (
     <LayoutMan

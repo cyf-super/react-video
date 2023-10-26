@@ -19,7 +19,6 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
 
   const { dispatchUpload, selectFiles, clearFiles } = useUpload()
 
-  console.log(11111111)
   const prop: UploadProps = {
     name: 'file',
     multiple: true,
@@ -31,7 +30,6 @@ export const UploadDrawer = ({ open, hidePopver }: UploadDrawerType) => {
     beforeUpload(_, fileList) {
       setUploadNum((preVal) => {
         if (preVal === fileList.length - 1) {
-          console.log(fileList)
           selectFiles(fileList)
           return 0
         }
