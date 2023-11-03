@@ -85,6 +85,7 @@ declare namespace File {
     categoryId: string
     createdAt: string
     updatedAt: string
+    videoImgPath?: string
   }
 
   interface DeleteFilesParams {

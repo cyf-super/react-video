@@ -1,21 +1,12 @@
 import { motion } from 'framer-motion'
 import { openNewTag } from '@cyf-super/utils'
+import { FormatFileDataType } from '@/utils/type'
 
-interface CardType extends File.FileType {
-  title: string
-  category: string
-  src: string
-  timer: string
-  fileId: string
-  create: string
-  videoImgPath: string
-}
-
-export const Card = ({ file }: { file: CardType }) => {
+export const Card = ({ file }: { file: FormatFileDataType }) => {
   const {
     fileId,
     name,
-    category,
+    categoryId,
     path,
     create: timer,
     type,
@@ -80,7 +71,7 @@ export const Card = ({ file }: { file: CardType }) => {
             {name}
           </p>
           <div className="mt-2">
-            <span>{category}</span>
+            <span>{categoryId}</span>
             <span className="ml-3">{timer}</span>
           </div>
         </div>

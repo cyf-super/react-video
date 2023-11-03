@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getCategories } from '@/api/category'
 import { getFilesService } from '@/api'
 import { formatFileData } from '@/utils/files'
+import { FormatFileDataType } from '@/utils/type'
 
 export interface CategoryOptions {
   label: string
@@ -11,7 +12,7 @@ export interface CategoryOptions {
 }
 
 export const useCard = (options: File.GetFilesParams) => {
-  const [files, setFiles] = useState<File.FileType[]>([])
+  const [files, setFiles] = useState<FormatFileDataType[]>([])
   const [count, setCount] = useState<number>(0)
   const { categoryId } = options
 

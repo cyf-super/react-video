@@ -7,6 +7,7 @@ interface BaseModalType {
   handleCancel: () => void
 }
 
+// 创建分类
 export const CategoryModal: FC<BaseModalType> = ({
   open,
   handleOk,
@@ -31,3 +32,31 @@ export const CategoryModal: FC<BaseModalType> = ({
     </Modal>
   )
 }
+
+interface BaseModalType {
+  open: boolean
+  handleOk: () => void
+  handleCancel: () => void
+}
+
+/**
+ * 删除的Modal
+ * @param param0
+ * @returns
+ */
+export const DeleteModal: FC<BaseModalType> = ({
+  open,
+  handleOk,
+  handleCancel,
+}) => (
+  <Modal
+    width={400}
+    title="删除"
+    open={open}
+    onOk={handleOk}
+    onCancel={handleCancel}
+    destroyOnClose
+  >
+    <p>确定删除该文件？</p>
+  </Modal>
+)

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from 'antd'
 import { useParams } from 'react-router-dom'
-import { CategoryModal } from './categoryModal'
+import { CategoryModal } from './Modals'
 import { UploadDrawer } from '@/components/uploadDrawer'
 import { UploadProvider } from '@/context/UploadProvider'
 import { FileTable } from './fileTable'

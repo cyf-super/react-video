@@ -38,19 +38,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/image': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/video': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/ffmpeg': {
+      '^/(api|image|video|ffmpeg)': {
         target: 'http://localhost:3000',
         changeOrigin: true,
       },

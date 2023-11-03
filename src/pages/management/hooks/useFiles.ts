@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { getFilesService, deleteFilesService } from '@/api'
 import { formatFileData } from '@/utils/files'
 import { removeFile, addFiles, setCount } from '@/store/slices/fileslice'
-import { GetFunctionParams } from '@/utils/type'
+import { FormatFileDataType, GetFunctionParams } from '@/utils/type'
 
 export type FileDataType = Pick<
   File.FileType,
@@ -42,10 +42,15 @@ const useGetFile = ({ categoryId }: GetFileType) => {
   }
 }
 
+/**
+ * 文件操作
+ * @returns
+ */
 const useHandleFile = () => {
   const dispatch = useDispatch()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
+  // 删除文件
   const deleteFile = (fileId: string) => {
     dispatch(removeFile(fileId))
     setShowDeleteModal(false)
@@ -54,9 +59,17 @@ const useHandleFile = () => {
     })
   }
 
+  // 下载文件
+  const downloadFile = (file: FormatFileDataType) => {
+    console.log('🚀 ~ downloadFile ~ fileId:', file)
+    const size = file.originSize
+    console.log(':', size)
+  }
+
   return {
-    deleteFile,
     showDeleteModal,
+    deleteFile,
+    downloadFile,
     setShowDeleteModal,
   }
 }

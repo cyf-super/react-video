@@ -16,6 +16,7 @@ export function formatFileData(files: File.FileType[]) {
     key: file.fileId,
     type: file.type,
     create: dayjs(file.createdAt).format('YYYY-MM-DD HH:mm'),
+    originSize: file.size,
     size: formatBytes(<number>file.size),
     name: sliceNameType(file.name)[0] || '',
   }))

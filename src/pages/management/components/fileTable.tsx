@@ -7,7 +7,7 @@ import {
   DeleteOutlined,
   EditOutlined,
 } from '@ant-design/icons'
-import { DeleteModal } from './deleteModal'
+import { DeleteModal } from './Modals'
 import { selectFiles } from '@/store/slices/fileslice'
 import { useHandleFile } from '../hooks/useFiles'
 import { columns } from '../map'
@@ -30,12 +30,18 @@ export const FileTable = () => {
   }
 
   const currentFile = useRef<File.FileType>()
-  const { deleteFile, showDeleteModal, setShowDeleteModal } = useHandleFile()
+  const { showDeleteModal, deleteFile, downloadFile, setShowDeleteModal } =
+    useHandleFile()
+
   const onHandleFile = (key: string, file: File.FileType) => {
     switch (key) {
       case '2':
         currentFile.current = file
         setShowDeleteModal(true)
+        break
+      case '3':
+        currentFile.current = file
+        downloadFile(file)
         break
       default:
         break
@@ -50,7 +56,7 @@ export const FileTable = () => {
     {
       key: '1',
       label: (
-        <div className="w-20">
+        <div className="w-20 flex-center justify-start">
           <EditOutlined />
           <span>编辑</span>
         </div>
@@ -62,6 +68,15 @@ export const FileTable = () => {
         <div className="w-20 flex-center justify-start">
           <DeleteOutlined />
           <span className="text-red-600 m-1">删除</span>
+        </div>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <div className="w-20 flex-center justify-start">
+          <DeleteOutlined />
+          <span className="text-red-600 m-1">下载</span>
         </div>
       ),
     },
