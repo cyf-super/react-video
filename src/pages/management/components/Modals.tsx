@@ -1,15 +1,19 @@
-import { FC, useState, ChangeEvent } from 'react'
+import { FC, useState, ChangeEvent, useEffect } from 'react'
 import { Input, Modal } from 'antd'
 
 interface BaseModalType {
   open: boolean
-  handleOk: () => void
+  handleOk: (name?: string) => void
   handleCancel: () => void
+  title: string
+  value?: string
 }
 
 // 创建分类
 export const CategoryModal: FC<BaseModalType> = ({
   open,
+  title,
+  value,
   handleOk,
   handleCancel,
 }) => {
@@ -17,13 +21,28 @@ export const CategoryModal: FC<BaseModalType> = ({
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value)
   }
+
+  useEffect(() => {
+    open && setCategory(value || '')
+  }, [open])
+
+  const onOk = () => {
+    setCategory('')
+    handleOk(category)
+  }
+
+  const onCancel = () => {
+    setCategory('')
+    handleCancel()
+  }
+
   return (
     <Modal
       width={400}
-      title="创建分类"
+      title={title}
       open={open}
-      onOk={handleOk}
-      onCancel={handleCancel}
+      onOk={onOk}
+      onCancel={onCancel}
       destroyOnClose
     >
       <p>
@@ -33,10 +52,8 @@ export const CategoryModal: FC<BaseModalType> = ({
   )
 }
 
-interface BaseModalType {
-  open: boolean
-  handleOk: () => void
-  handleCancel: () => void
+interface DeleteModalType extends Omit<BaseModalType, 'title'> {
+  text: string
 }
 
 /**
@@ -44,19 +61,20 @@ interface BaseModalType {
  * @param param0
  * @returns
  */
-export const DeleteModal: FC<BaseModalType> = ({
+export const DeleteModal = ({
   open,
+  text,
   handleOk,
   handleCancel,
-}) => (
+}: DeleteModalType) => (
   <Modal
     width={400}
     title="删除"
     open={open}
-    onOk={handleOk}
+    onOk={() => handleOk()}
     onCancel={handleCancel}
     destroyOnClose
   >
-    <p>确定删除该文件？</p>
+    <p>{text}</p>
   </Modal>
 )

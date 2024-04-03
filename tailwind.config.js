@@ -6,12 +6,12 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        video: image.video,
+        // video: image.video,
       },
     },
     container: {
       center: true,
-      padding: {
+      margin: {
         DEFAULT: '1rem',
         sm: '2rem',
         lg: '5rem',
@@ -19,11 +19,11 @@ export default {
         '2xl': '8rem',
       },
     },
-    colors: {
-      shallowPurple: '#9555ff',
-      deepPurple: '#7131d9',
-      gray: '#E5E5E6',
-    },
+    // colors: {
+    //   // shallowPurple: '#9555ff',
+    //   // deepPurple: '#7131d9',
+    //   // gray: '#E5E5E6',
+    // },
   },
   plugins: [],
 }

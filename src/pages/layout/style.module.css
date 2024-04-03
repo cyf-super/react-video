@@ -3,3 +3,7 @@
   color: #fff !important;
   border: 2px #7131d9 solid;
 }
+
+.ant-layout-sider {
+  line-height: none;
+}

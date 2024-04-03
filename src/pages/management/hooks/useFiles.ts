@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { getFilesService, deleteFilesService } from '@/api'
 import { formatFileData } from '@/utils/files'
 import { removeFile, addFiles, setCount } from '@/store/slices/fileslice'
-import { FormatFileDataType, GetFunctionParams } from '@/utils/type'
+import { GetFunctionParams } from '@/utils/type'
 
 export type FileDataType = Pick<
   File.FileType,
@@ -60,7 +60,7 @@ const useHandleFile = () => {
   }
 
   // 下载文件
-  const downloadFile = (file: FormatFileDataType) => {
+  const downloadFile = (file: File.FileType) => {
     console.log('🚀 ~ downloadFile ~ fileId:', file)
     const size = file.originSize
     console.log(':', size)

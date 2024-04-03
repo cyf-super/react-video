@@ -51,7 +51,7 @@ export const HeaderChannel: FC<HeaderChannelType> = ({
             placeholder="search"
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
-            className="w-60 h-9 text-lg"
+            className="w-60 h-9 text-lg md:w-30"
           />
           <span className={spanIcon}>
             <FiSearch className={fiSearch} />

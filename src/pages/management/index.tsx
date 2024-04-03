@@ -1,16 +1,14 @@
+import { Toaster } from 'sonner'
 import { LayoutMan } from '../layout'
 import { Content } from './components/content'
-import { useGetCategory } from './hooks/useCategory'
+import { CategorySider } from './components/categorySider'
 import './style.css'
 
 export default function Management() {
-  const { data, clickMenuItem } = useGetCategory()
-
   return (
-    <LayoutMan
-      sideMemu={data || []}
-      clickMenuItem={clickMenuItem}
-      content={<Content />}
-    />
+    <>
+      <LayoutMan content={<Content />} categorySider={<CategorySider />} />
+      <Toaster position="top-right" duration={2000} richColors />
+    </>
   )
 }

@@ -13,7 +13,7 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
 }
 
 const axios = Axios.create({
-  baseURL: '',
+  baseURL: '/api',
   timeout: 100_000,
   withCredentials: false,
 })

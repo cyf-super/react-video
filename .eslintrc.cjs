@@ -25,6 +25,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 0,
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'no-console': 'off',

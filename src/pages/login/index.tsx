@@ -96,7 +96,7 @@ export default function Login() {
           alt=""
         />
         <div className="flex-col-center w-96">
-          <h2 className="text-3xl italic font-bold">数学课堂</h2>
+          {/* <h2 className="text-3xl italic font-bold">数学课堂</h2> */}
           <br />
           <LoginForm />
         </div>

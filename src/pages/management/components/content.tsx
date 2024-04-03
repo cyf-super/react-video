@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Button } from 'antd'
 import { useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 import { CategoryModal } from './Modals'
 import { UploadDrawer } from '@/components/uploadDrawer'
 import { UploadProvider } from '@/context/UploadProvider'
 import { FileTable } from './fileTable'
 import { useGetFile } from '../hooks/useFiles'
+import { useCategory } from '../hooks/useCategory'
 import './fileTable.css'
 
 export const Content = () => {
@@ -14,6 +16,8 @@ export const Content = () => {
 
   const { categoryId } = useParams()
 
+  const { createMutation } = useCategory()
+
   useGetFile({
     categoryId,
   } as File.GetFilesParams)
@@ -21,8 +25,13 @@ export const Content = () => {
   const cancelCategory = () => {
     showModal(false)
   }
-  const createCategory = () => {
-    showModal(true)
+  const createCategory = (name?: string) => {
+    if (!name?.trim()) {
+      toast.warning('Event start time cannot be earlier than 8am')
+      return
+    }
+    createMutation.mutate(name)
+    showModal(false)
   }
 
   const hidePopver = () => {
@@ -49,6 +58,7 @@ export const Content = () => {
       </div>
       <CategoryModal
         open={open}
+        title="创建分类"
         handleOk={createCategory}
         handleCancel={cancelCategory}
       />

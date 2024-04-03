@@ -6,7 +6,7 @@ import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
 import { uploadVideoService } from '@/api'
 import { isVideoOfFile } from '@/utils/files'
 import { createFrame } from '@/utils/captureFrame'
-// import { useGetCategory } from './useCategory'
+// import { useCategory } from './useCategory'
 
 export interface UploadDataType {
   file: UploadFile
@@ -102,13 +102,13 @@ const uploadDispatch = (state: StateType, action: ActionType) => {
 export const useUploadVideo = () => {
   const client = useQueryClient()
   const { categoryId } = useParams()
-  // const { categories } = useGetCategory()
+  // const { categories } = useCategory()
 
   const [state, dispatch] = useReducer(uploadDispatch, defaultInitialState)
 
   const { mutate: upload, data } = useMutation(uploadVideoService, {
     onSuccess(res) {
-      if (res.code === 12002) {
+      if (res.code === '12002') {
         console.error('上传失败', res, data)
         // dispatch({
         //   type: 'PROGRESS',

@@ -115,6 +115,7 @@ export const FileTable = () => {
       />
       <DeleteModal
         open={showDeleteModal}
+        text="确定删除该文件？"
         handleOk={handleDelete}
         handleCancel={() => setShowDeleteModal(false)}
       />

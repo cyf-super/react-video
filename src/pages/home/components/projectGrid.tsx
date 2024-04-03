@@ -15,7 +15,7 @@ export const ProjectGrid = () => {
     categoryId: categoryId as string,
   })
   return (
-    <div className="mx-40">
+    <div className="mx-20">
       <HeaderChannel searchName={searchName} setSearchName={setSearchName} />
       <div className={gridDiv}>
         {files && files.map((card) => <Card file={card} key={card.id} />)}

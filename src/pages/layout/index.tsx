@@ -1,6 +1,5 @@
+import { Layout } from 'antd'
 import { ReactNode } from 'react'
-import { Layout, Menu } from 'antd'
-import type { MenuProps } from 'antd'
 import { AppHeader } from './header'
 import './style.module.css'
 
@@ -14,21 +13,15 @@ const headerStyle: React.CSSProperties = {
 }
 
 const siderStyle: React.CSSProperties = {
-  lineHeight: '120px',
   backgroundColor: '#F7F7F7',
 }
 
 interface LayoutParamsType {
-  sideMemu: MenuProps['items']
-  clickMenuItem: (key: string) => void
   content: ReactNode
+  categorySider: ReactNode
 }
 
-export const LayoutMan = ({
-  sideMemu,
-  clickMenuItem,
-  content,
-}: LayoutParamsType) => (
+export const LayoutMan = ({ content, categorySider }: LayoutParamsType) => (
   <Layout className="flex h-screen">
     <Header
       style={headerStyle}
@@ -37,15 +30,7 @@ export const LayoutMan = ({
       <AppHeader />
     </Header>
     <Layout hasSider className="flex-1 bg-white overflow-hidden">
-      <Sider style={siderStyle}>
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          style={{ height: '100%', borderRight: 0 }}
-          items={sideMemu}
-          onClick={(menuInfo) => clickMenuItem(menuInfo.key)}
-        />
-      </Sider>
+      <Sider style={siderStyle}>{categorySider}</Sider>
       <Content>{content}</Content>
     </Layout>
     {/* {showFooter && <Footer className="text-center">{footer}</Footer>} */}

@@ -1,18 +1,19 @@
-import { createElement, useCallback } from 'react'
+import { useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { LaptopOutlined } from '@ant-design/icons'
-import { getCategories } from '@/api'
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from '@/api'
 
-const menuActiveCSS = {
-  backgroundColor: '#9555ff',
-  color: '#fff',
-  border: '2px #7131d9 solid',
-}
-
-export const useGetCategory = () => {
+export const useCategory = () => {
   const navigate = useNavigate()
   const { categoryId } = useParams()
+
+  const queryClient = new QueryClient()
 
   const formatData = useCallback(
     (key: string) =>
@@ -21,19 +22,49 @@ export const useGetCategory = () => {
         if (!key) {
           navigate(`/manage/${firstCategoryId}`)
         }
-        return data.data.categories.map((category) => ({
-          key: `${category.categoryId}`,
-          icon: createElement(LaptopOutlined),
-          label: `${category.name}`,
-          style: category.categoryId === key ? menuActiveCSS : {},
-        }))
+        return data.data.categories
       },
-    [navigate]
+    []
   )
   const { data, isError, isLoading } = useQuery({
     queryKey: ['category'],
     queryFn: getCategories,
     select: formatData(<string>categoryId),
+  })
+
+  const createMutation = useMutation({
+    mutationFn: (name: string) => createCategory(name),
+    onSuccess: async (result) => {
+      if (result.code === '11001') {
+        toast.error(result.message)
+        return
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ['category'] })
+    },
+  })
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, name }: { id: string; name: string }) =>
+      updateCategory(id, name),
+    onSuccess: async (result) => {
+      if (result.code === '11001') {
+        toast.error(result.message)
+        return
+      }
+      await queryClient.invalidateQueries({ queryKey: ['category'] })
+    },
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteCategory(id),
+    onSuccess(result) {
+      if (result.code === '11001') {
+        toast.error(result.message)
+        return
+      }
+      queryClient.invalidateQueries({ queryKey: ['category'] })
+    },
   })
 
   const clickMenuItem = (key: string = '') => {
@@ -44,6 +75,9 @@ export const useGetCategory = () => {
     data,
     isLoading,
     isError,
+    createMutation,
+    updateMutation,
+    deleteMutation,
     clickMenuItem,
   }
 }
