@@ -1,124 +1,231 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Button, Table, Dropdown } from 'antd'
-import { useState, useRef } from 'react'
+import { useState, useRef, memo, forwardRef } from 'react'
 import type { MenuProps } from 'antd'
-import { useSelector } from 'react-redux'
 import {
   EllipsisOutlined,
   DeleteOutlined,
   EditOutlined,
 } from '@ant-design/icons'
-import { DeleteModal } from './Modals'
-import { selectFiles } from '@/store/slices/fileslice'
-import { useHandleFile } from '../hooks/useFiles'
-import { columns } from '../map'
+import { useParams } from 'react-router-dom'
+import type { ColumnsType } from 'antd/es/table'
+import { formatBytes } from '@cyf-super/utils'
+import dayjs from 'dayjs'
+import { useDispatch } from 'react-redux'
+import { toast } from 'sonner'
+import { CategoryModal, DeleteModal, UpdateModal } from './Modals'
+import { useGetFile, useHandleFile } from '../hooks/useFiles'
+import { sliceNameType } from '@/utils/files'
+import { setSelectIds } from '@/store/slices/fileslice'
+import { UploadProvider } from '@/context/UploadProvider'
+import { UploadDrawer } from '@/components/uploadDrawer'
+import { useCategory } from '../hooks/useCategory'
+import './fileTable.css'
 
-// interface DataType {
-//   key: React.Key
-//   name: string
-//   type: string
-//   create: string
-//   size: string
-// }
+export const FileTable = memo(
+  forwardRef(() => {
+    const { categoryId } = useParams()
+    const dispatch = useDispatch()
 
-export const FileTable = () => {
-  const fileData = useSelector(selectFiles)
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+    const [popver, showPopver] = useState(false)
+    const [open, showModal] = useState(false)
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys)
-    setSelectedRowKeys(newSelectedRowKeys)
-  }
+    const { createMutation } = useCategory()
+    const {
+      fileIds,
+      showBatchDeleteModal,
+      setShowBatchDeleteModal,
+      onBatchDelete,
+      deleteBatch,
+    } = useHandleFile()
 
-  const currentFile = useRef<File.FileType>()
-  const { showDeleteModal, deleteFile, downloadFile, setShowDeleteModal } =
-    useHandleFile()
-
-  const onHandleFile = (key: string, file: File.FileType) => {
-    switch (key) {
-      case '2':
-        currentFile.current = file
-        setShowDeleteModal(true)
-        break
-      case '3':
-        currentFile.current = file
-        downloadFile(file)
-        break
-      default:
-        break
+    const cancelCategory = () => {
+      showModal(false)
     }
-  }
+    const createCategory = (name?: string) => {
+      if (!name?.trim()) {
+        toast.warning('名称不能为空～')
+        return
+      }
+      createMutation.mutate(name)
+      showModal(false)
+    }
 
-  const handleDelete = () => {
-    deleteFile(currentFile.current?.fileId as string)
-  }
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
 
-  const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: (
-        <div className="w-20 flex-center justify-start">
-          <EditOutlined />
-          <span>编辑</span>
+    const { files } = useGetFile({
+      categoryId,
+    } as File.GetFilesParams)
+
+    const currentFile = useRef<File.FileType>()
+    const {
+      showEditModal,
+      showDeleteModal,
+      deleteFile,
+      downloadFile,
+      handleUpdate,
+      setShowDeleteModal,
+      setShowEditModal,
+    } = useHandleFile()
+
+    const onHandleFile = (key: string, file: File.FileType) => {
+      currentFile.current = file
+      switch (key) {
+        case 'edit':
+          setShowEditModal(true)
+          break
+        case 'delete':
+          setShowDeleteModal(true)
+          break
+        case 'download':
+          downloadFile(file)
+          break
+        default:
+          break
+      }
+    }
+
+    const items: MenuProps['items'] = [
+      {
+        key: 'edit',
+        label: (
+          <div className="w-20 flex-center justify-start">
+            <EditOutlined />
+            <span>编辑</span>
+          </div>
+        ),
+      },
+      {
+        key: 'delete',
+        label: (
+          <div className="w-20 flex-center justify-start">
+            <DeleteOutlined />
+            <span className="text-red-600 m-1">删除</span>
+          </div>
+        ),
+      },
+      {
+        key: 'download',
+        label: (
+          <div className="w-20 flex-center justify-start">
+            <DeleteOutlined />
+            <span className="m-1">下载</span>
+          </div>
+        ),
+      },
+    ]
+
+    const tableCol: ColumnsType<any> = [
+      {
+        title: '名称',
+        dataIndex: 'name',
+        render: (text) => (
+          <div className="text-sky-500 cursor-pointer" onClick={() => {}}>
+            {sliceNameType(text)[0] || ''}
+          </div>
+        ),
+      },
+      {
+        title: '类型',
+        dataIndex: 'type',
+      },
+      {
+        title: '大小',
+        dataIndex: 'size',
+        render: (size) => <div>{formatBytes(size)}</div>,
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'createdAt',
+        render: (timer) => <div>{dayjs(timer).format('YYYY-MM-DD HH:mm')}</div>,
+      },
+      {
+        title: '操作',
+        dataIndex: 'handle',
+        render: (_: unknown, record: File.FileType) => (
+          <Dropdown
+            menu={{ items, onClick: ({ key }) => onHandleFile(key, record) }}
+            placement="bottom"
+            arrow={{ pointAtCenter: true }}
+          >
+            <Button onClick={(e) => e.preventDefault()}>
+              <EllipsisOutlined />
+            </Button>
+          </Dropdown>
+        ),
+      },
+    ]
+
+    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(newSelectedRowKeys)
+      dispatch(setSelectIds(newSelectedRowKeys))
+    }
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: onSelectChange,
+    }
+
+    return (
+      <div className="mx-5">
+        <div className="my-5">
+          <div className="flex justify-between">
+            <div>
+              <Button
+                type="primary"
+                className="mr-5"
+                onClick={() => showModal(true)}
+              >
+                新建分类
+              </Button>
+              <Button type="primary" onClick={() => showPopver(true)}>
+                上传
+              </Button>
+            </div>
+            <Button type="primary" onClick={onBatchDelete}>
+              删除
+            </Button>
+          </div>
         </div>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <div className="w-20 flex-center justify-start">
-          <DeleteOutlined />
-          <span className="text-red-600 m-1">删除</span>
-        </div>
-      ),
-    },
-    {
-      key: '3',
-      label: (
-        <div className="w-20 flex-center justify-start">
-          <DeleteOutlined />
-          <span className="text-red-600 m-1">下载</span>
-        </div>
-      ),
-    },
-  ]
+        <Table
+          rowSelection={rowSelection}
+          columns={tableCol}
+          dataSource={files}
+        />
 
-  const tableCol = [
-    ...columns,
-    {
-      title: '操作',
-      dataIndex: 'handle',
-      render: (_: unknown, record: File.FileType) => (
-        <Dropdown
-          menu={{ items, onClick: ({ key }) => onHandleFile(key, record) }}
-          placement="bottom"
-          arrow={{ pointAtCenter: true }}
-        >
-          <Button onClick={(e) => e.preventDefault()}>
-            <EllipsisOutlined />
-          </Button>
-        </Dropdown>
-      ),
-    },
-  ]
+        <DeleteModal
+          open={showDeleteModal}
+          text="确定删除该文件？"
+          handleOk={() => deleteFile(currentFile.current!)}
+          handleCancel={() => {
+            setShowDeleteModal(false)
+          }}
+        />
+        <UpdateModal
+          open={showEditModal}
+          file={currentFile.current!}
+          handleOk={handleUpdate}
+          handleCancel={() => setShowEditModal(false)}
+        />
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  }
-
-  return (
-    <>
-      <Table
-        rowSelection={rowSelection}
-        columns={tableCol}
-        dataSource={fileData}
-      />
-      <DeleteModal
-        open={showDeleteModal}
-        text="确定删除该文件？"
-        handleOk={handleDelete}
-        handleCancel={() => setShowDeleteModal(false)}
-      />
-    </>
-  )
-}
+        <CategoryModal
+          open={open}
+          title="创建分类"
+          handleOk={createCategory}
+          handleCancel={cancelCategory}
+        />
+        <DeleteModal
+          open={showBatchDeleteModal}
+          text={`确定删除${fileIds.length}文件？`}
+          handleOk={deleteBatch}
+          handleCancel={() => {
+            setShowBatchDeleteModal(false)
+            setSelectedRowKeys([])
+          }}
+        />
+        <UploadProvider>
+          <UploadDrawer open={popver} hidePopver={() => showPopver(false)} />
+        </UploadProvider>
+      </div>
+    )
+  })
+)

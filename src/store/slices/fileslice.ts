@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+// eslint-disable-next-line import/no-cycle
+import { RootState } from '..'
 
 interface StateType {
   files: File.FileType[]
+  selectIds: string[]
   count: number
 }
 
@@ -10,6 +13,7 @@ const findIndex = (list: File.FileType[], id: string) =>
 
 const initialState: StateType = {
   files: [],
+  selectIds: [],
   count: 0,
 }
 
@@ -34,12 +38,18 @@ export const fileSlice = createSlice({
       const count = actions.payload
       state.count = count
     },
+    setSelectIds: (state, actions) => {
+      const selectIds = actions.payload
+      state.selectIds = selectIds
+    },
   },
 })
 
-export const selectFiles = (state: any) => state.files.files
-export const selectCount = (state: any) => state.files.count
+export const selectFiles = (state: RootState) => state.files.files
+export const selectCount = (state: RootState) => state.files.count
+export const selectFileIds = (state: RootState) => state.files.selectIds
 
-export const { removeFile, addFiles, setCount } = fileSlice.actions
+export const { removeFile, addFiles, setCount, setSelectIds } =
+  fileSlice.actions
 
 export default fileSlice.reducer

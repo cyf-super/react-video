@@ -15,6 +15,6 @@ export const columns: ColumnsType<any> = [
   },
   {
     title: '创建时间',
-    dataIndex: 'create',
+    dataIndex: 'createTime',
   },
 ]

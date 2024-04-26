@@ -1,3 +1,8 @@
+interface PublicResponse {
+  status: boolean
+  code: string
+}
+
 declare namespace Login {
   interface Params {
     username: string
@@ -22,8 +27,7 @@ declare namespace Uplaod {
     source: CancelToken
   }
 
-  interface Response {
-    code: string
+  interface Response extends PublicResponse {
     data: {
       categories: Data[]
       count: number
@@ -40,8 +44,7 @@ declare namespace Uplaod {
 }
 
 declare namespace Category {
-  interface Response {
-    code: string
+  interface Response extends PublicResponse {
     data: {
       categories: Data[]
       count: number
@@ -63,15 +66,13 @@ declare namespace File {
     categoryId: string
   }
 
-  interface GetFilesResponse {
-    code: string
+  interface GetFilesResponse extends PublicResponse {
     data: {
       count: number
       files: FileType[]
     }
   }
-  interface GetFileResponse {
-    code: string
+  interface GetFileResponse extends PublicResponse {
     data: FileType
   }
 
@@ -86,15 +87,15 @@ declare namespace File {
     categoryId: string
     createdAt: string
     updatedAt: string
+    createTime: string
     videoImgPath?: string
-    originSize: number
+    fileName: string
   }
 
   interface DeleteFilesParams {
     fileIds: string[]
   }
-  interface DeleteFilesResponse {
-    code: string
+  interface DeleteFilesResponse extends PublicResponse {
     data: {
       count: number
     }

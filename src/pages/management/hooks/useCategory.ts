@@ -1,6 +1,6 @@
-import { useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
+import { useCallback, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import {
   createCategory,
@@ -8,12 +8,13 @@ import {
   getCategories,
   updateCategory,
 } from '@/api'
+import { queryClient } from '@/queryClient/index'
 
 export const useCategory = () => {
   const navigate = useNavigate()
-  const { categoryId } = useParams()
-
-  const queryClient = new QueryClient()
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showInputModal, setShowInputModal] = useState(false)
+  const idRef = useRef('')
 
   const formatData = useCallback(
     (key: string) =>
@@ -26,11 +27,6 @@ export const useCategory = () => {
       },
     []
   )
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ['category'],
-    queryFn: getCategories,
-    select: formatData(<string>categoryId),
-  })
 
   const createMutation = useMutation({
     mutationFn: (name: string) => createCategory(name),
@@ -39,8 +35,7 @@ export const useCategory = () => {
         toast.error(result.message)
         return
       }
-
-      await queryClient.invalidateQueries({ queryKey: ['category'] })
+      queryClient.invalidateQueries({ queryKey: ['category'] })
     },
   })
 
@@ -52,7 +47,7 @@ export const useCategory = () => {
         toast.error(result.message)
         return
       }
-      await queryClient.invalidateQueries({ queryKey: ['category'] })
+      queryClient.invalidateQueries({ queryKey: ['category'] })
     },
   })
 
@@ -63,7 +58,9 @@ export const useCategory = () => {
         toast.error(result.message)
         return
       }
-      queryClient.invalidateQueries({ queryKey: ['category'] })
+      queryClient.invalidateQueries({
+        queryKey: ['category'],
+      })
     },
   })
 
@@ -71,13 +68,33 @@ export const useCategory = () => {
     navigate(`/manage/${key}`)
   }
 
+  const handleDelete = () => {
+    deleteMutation.mutate(idRef.current)
+    setShowDeleteModal(false)
+  }
+
+  const createCategoryFunc = (name?: string) => {
+    if (!name?.trim()) {
+      toast.warning('名称不能为空~')
+      return
+    }
+    updateMutation.mutate({
+      id: idRef.current,
+      name,
+    })
+    setShowInputModal(false)
+  }
+
   return {
-    data,
-    isLoading,
-    isError,
+    showInputModal,
+    showDeleteModal,
     createMutation,
-    updateMutation,
-    deleteMutation,
+    idRef,
     clickMenuItem,
+    formatData,
+    setShowDeleteModal,
+    setShowInputModal,
+    createCategoryFunc,
+    handleDelete,
   }
 }

@@ -3,10 +3,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import type { UploadFile } from 'antd'
 import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
+import { toast } from 'sonner'
 import { uploadVideoService } from '@/api'
 import { isVideoOfFile } from '@/utils/files'
 import { createFrame } from '@/utils/captureFrame'
-// import { useCategory } from './useCategory'
 
 export interface UploadDataType {
   file: UploadFile
@@ -102,14 +102,15 @@ const uploadDispatch = (state: StateType, action: ActionType) => {
 export const useUploadVideo = () => {
   const client = useQueryClient()
   const { categoryId } = useParams()
-  // const { categories } = useCategory()
 
   const [state, dispatch] = useReducer(uploadDispatch, defaultInitialState)
 
-  const { mutate: upload, data } = useMutation(uploadVideoService, {
+  const { mutate: upload, data } = useMutation({
+    mutationFn: uploadVideoService,
     onSuccess(res) {
-      if (res.code === '12002') {
+      if (!res.status) {
         console.error('上传失败', res, data)
+        toast.error('上传失败!')
         // dispatch({
         //   type: 'PROGRESS',
         //   file: <UploadFile>file,
@@ -118,10 +119,13 @@ export const useUploadVideo = () => {
         // })
         return
       }
+      toast.error('上传成功!')
+
       client.invalidateQueries(['getFile', categoryId])
     },
     onError(err) {
       console.error('上传失败', err)
+      toast.error('上传失败!')
     },
   })
 

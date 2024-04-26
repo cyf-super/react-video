@@ -26,6 +26,7 @@ export const UploadProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { dispatchUpload, state, dispatch } = useUploadVideo()
   const selectFiles = useCallback(
     (files: UploadFile[]) => {
+      console.log('files ', files)
       dispatch({
         type: 'ADD',
         files,
