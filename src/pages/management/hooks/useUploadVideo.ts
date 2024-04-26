@@ -119,7 +119,7 @@ export const useUploadVideo = () => {
         // })
         return
       }
-      toast.error('上传成功!')
+      toast.success('上传成功!')
 
       client.invalidateQueries(['getFile', categoryId])
     },

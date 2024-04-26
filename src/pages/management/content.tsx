@@ -1,4 +1,4 @@
-import { FileTable } from './fileTable'
+import { FileTable } from './components/fileTable'
 
 export const Content = () => (
   <div className="mt-8">

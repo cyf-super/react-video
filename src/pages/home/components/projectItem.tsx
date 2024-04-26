@@ -18,27 +18,29 @@ export const Card = ({ file }: { file: FormatFileDataType }) => {
   }
 
   const renderTag = () => {
-    if (type.startsWith('image')) {
-      return (
-        <img
-          src={path}
-          alt=""
-          className="rounded-t-xl border-none"
-          onClick={onView}
-        />
-      )
-    }
-    if (type.startsWith('video')) {
-      return (
-        <div className="`bg-cover bg-no-repeat bg-video)]`">
+    switch (true) {
+      case type.startsWith('image'):
+        return (
           <img
-            src={videoImgPath}
+            src={path}
             alt=""
-            className="rounded-t-xl border-none"
+            className="rounded-t-xl border-none object-fill"
             onClick={onView}
           />
-        </div>
-      )
+        )
+      case type.startsWith('video'):
+        return (
+          <div className="`bg-cover bg-no-repeat bg-video)]`">
+            <img
+              src={videoImgPath}
+              alt=""
+              className="rounded-t-xl border-none"
+              onClick={onView}
+            />
+          </div>
+        )
+      default:
+        break
     }
 
     return (

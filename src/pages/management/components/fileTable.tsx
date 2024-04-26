@@ -38,6 +38,9 @@ export const FileTable = memo(
       onBatchDelete,
       deleteBatch,
     } = useHandleFile()
+    const { files, pagination, onChange } = useGetFile({
+      categoryId,
+    } as File.GetFilesParams)
 
     const cancelCategory = () => {
       showModal(false)
@@ -52,10 +55,6 @@ export const FileTable = memo(
     }
 
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
-
-    const { files } = useGetFile({
-      categoryId,
-    } as File.GetFilesParams)
 
     const currentFile = useRef<File.FileType>()
     const {
@@ -190,6 +189,12 @@ export const FileTable = memo(
           rowSelection={rowSelection}
           columns={tableCol}
           dataSource={files}
+          pagination={{
+            total: pagination.total,
+            pageSize: pagination.pageSize,
+            current: pagination.currentPage,
+            onChange 
+          }}
         />
 
         <DeleteModal

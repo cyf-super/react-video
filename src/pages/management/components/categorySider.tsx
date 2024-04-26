@@ -182,7 +182,7 @@ export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
       </div>
       <DeleteModal
         open={showDeleteModal}
-        text="确定删除该文件？"
+        text="确定删除该分类？"
         handleOk={handleDelete}
         handleCancel={() => setShowDeleteModal(false)}
       />

@@ -64,6 +64,8 @@ declare namespace Category {
 declare namespace File {
   interface GetFilesParams {
     categoryId: string
+    pageSize: number
+    currentPage: number
   }
 
   interface GetFilesResponse extends PublicResponse {

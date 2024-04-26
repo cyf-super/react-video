@@ -9,7 +9,6 @@ import { formatFileData } from '@/utils/files'
 import {
   removeFile,
   addFiles,
-  setCount,
   selectFileIds,
   selectFiles,
   setSelectIds,
@@ -42,10 +41,25 @@ interface DeleteParamsType {
  */
 const useGetFile = ({ categoryId }: GetFileType) => {
   const [files, setFiles] = useState<File.FileType[]>([])
+  const [pagination, setPagination] = useState({
+    total: 0,
+    pageSize: 10,
+    currentPage: 1,
+  })
   const dispatch = useDispatch()
   const { data, isLoading } = useQuery({
-    queryKey: ['getFile', categoryId],
-    queryFn: async () => getFilesService({ categoryId }),
+    queryKey: [
+      'getFile',
+      categoryId,
+      pagination.pageSize,
+      pagination.currentPage,
+    ],
+    queryFn: async () =>
+      getFilesService({
+        categoryId,
+        pageSize: pagination.pageSize,
+        currentPage: pagination.currentPage,
+      }),
     enabled: !!categoryId,
   })
 
@@ -53,14 +67,27 @@ const useGetFile = ({ categoryId }: GetFileType) => {
     if (data) {
       const newData = formatFileData(data.data.files)
       dispatch(addFiles(newData))
-      dispatch(setCount(data.data?.count))
+      setPagination({
+        ...pagination,
+        total: data.data?.count,
+      })
       setFiles(newData)
     }
   }, [data, dispatch])
 
+  const onChange = (page: number, pageSize: number) => {
+    setPagination({
+      ...pagination,
+      currentPage: page,
+      pageSize,
+    })
+  }
+
   return {
     isLoading,
     files,
+    pagination,
+    onChange,
   }
 }
 

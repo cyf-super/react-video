@@ -2,7 +2,7 @@ import { Toaster } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { LayoutMan } from '../layout'
-import { Content } from './components/content'
+import { Content } from './content'
 import { CategorySider } from './components/categorySider'
 import './style.css'
 import { useCategory } from './hooks/useCategory'
@@ -17,8 +17,6 @@ export default function Management() {
     queryFn: getCategories,
     select: formatData(categoryId as string),
   })
-
-  console.log(2222)
 
   return (
     <>

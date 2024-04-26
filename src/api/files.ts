@@ -18,14 +18,10 @@ export const getFileService = (fileId: string) =>
  * @param params
  * @returns
  */
-export const getFilesService = (params: File.GetFilesParams) => {
-  const { categoryId } = params
-  return request.get<File.GetFilesResponse, File.GetFilesResponse>('/files', {
-    params: {
-      categoryId,
-    },
+export const getFilesService = (params: File.GetFilesParams) =>
+  request.get<File.GetFilesResponse, File.GetFilesResponse>('/files', {
+    params,
   })
-}
 
 /**
  * 删除文件 -> 单个/批量
