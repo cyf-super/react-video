@@ -1,21 +1,25 @@
 import { motion } from 'framer-motion'
 import { openNewTag } from '@cyf-super/utils'
+import dayjs from 'dayjs'
+import { useSelector } from 'react-redux'
 import { FormatFileDataType } from '@/utils/type'
+import { sliceNameType } from '@/utils/files'
+import { selectCateGory } from '@/store/slices/fileslice'
+
+type CateGoryMapType = { [key: string]: string }
 
 export const Card = ({ file }: { file: FormatFileDataType }) => {
-  const {
-    fileId,
-    name,
-    categoryId,
-    path,
-    create: timer,
-    type,
-    videoImgPath,
-  } = file
+  const { fileId, name, categoryId, path, createdAt, type, videoImgPath } = file
   const onView = () => {
     const url = `${window.location.origin}/view/${fileId}`
     openNewTag(url)
   }
+
+  const cateGories = useSelector(selectCateGory)
+  const cateGoryMap = cateGories.reduce((pre, item) => {
+    pre[item.id] = item.label
+    return pre
+  }, {} as CateGoryMapType)
 
   const renderTag = () => {
     switch (true) {
@@ -24,17 +28,17 @@ export const Card = ({ file }: { file: FormatFileDataType }) => {
           <img
             src={path}
             alt=""
-            className="rounded-t-xl border-none object-fill"
+            className="aspect-video rounded-t-xl border-none object-fill"
             onClick={onView}
           />
         )
       case type.startsWith('video'):
         return (
-          <div className="`bg-cover bg-no-repeat bg-video)]`">
+          <div className="`bg-cover bg-no-repeat bg-video`">
             <img
               src={videoImgPath}
               alt=""
-              className="rounded-t-xl border-none"
+              className="aspect-video  rounded-t-xl border-none object-cover"
               onClick={onView}
             />
           </div>
@@ -67,14 +71,22 @@ export const Card = ({ file }: { file: FormatFileDataType }) => {
         <div className="text-center py-5 mx-5">
           {renderTag()}
           <p
-            className="font-general-medium text-base md:text-xl overflow-hidden whitespace-nowrap overflow-ellipsis"
+            className="mt-2 font-general-medium text-base md:text-xl truncate"
             title={name}
           >
-            {name}
+            {sliceNameType(name)[0]}
           </p>
-          <div className="mt-2">
-            <span>{categoryId}</span>
-            <span className="ml-3">{timer}</span>
+          <div className="mt-2 text-xs text-slate-400">
+            <div>
+              类别：
+              <span className="">{cateGoryMap[categoryId]}</span>
+            </div>
+            <div>
+              <span className="ml-3">
+                时间：
+                {dayjs(createdAt).format('YYYY-MM-DD HH:mm')}
+              </span>
+            </div>
           </div>
         </div>
       </div>

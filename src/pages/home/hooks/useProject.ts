@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useDispatch } from 'react-redux'
 import { getCategories } from '@/api/category'
 import { getFilesService } from '@/api'
 import { formatFileData } from '@/utils/files'
 import { FormatFileDataType } from '@/utils/type'
+import { addCateGory } from '@/store/slices/fileslice'
 
 export interface CategoryOptions {
   label: string
@@ -17,7 +19,7 @@ export const useCard = (options: File.GetFilesParams) => {
   const { categoryId } = options
 
   const { data: res, isLoading } = useQuery({
-    queryKey: ['files', categoryId],
+    queryKey: ['files', categoryId, options.name],
     queryFn: () => getFilesService(options),
   })
 
@@ -37,6 +39,7 @@ export const useCard = (options: File.GetFilesParams) => {
 }
 
 export const useSelect = () => {
+  const dispatch = useDispatch()
   const [categores, setCategory] = useState<CategoryOptions[]>([])
   const { data: res, isLoading } = useQuery({
     queryKey: ['selectCat'],
@@ -53,6 +56,7 @@ export const useSelect = () => {
       }))
 
       setCategory(newCategories)
+      dispatch(addCateGory(newCategories))
     }
   }, [res])
 

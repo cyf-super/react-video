@@ -6,9 +6,9 @@ import './style.module.css'
 const { Header, Sider, Content } = Layout
 const headerStyle: React.CSSProperties = {
   textAlign: 'center',
-  height: 100,
+  height: 80,
   paddingInline: 50,
-  lineHeight: '64px',
+  lineHeight: '48px',
   backgroundColor: '#fff',
 }
 
@@ -25,7 +25,7 @@ export const LayoutMan = ({ content, categorySider }: LayoutParamsType) => (
   <Layout className="flex h-screen">
     <Header
       style={headerStyle}
-      className="h-full drop-shadow-sm overflow-hidden"
+      className="h-full drop-shadow-sm overflow-hidden shadow-md shadow-[#f1f1ff]"
     >
       <AppHeader />
     </Header>

@@ -53,9 +53,9 @@ export const HeaderChannel: FC<HeaderChannelType> = ({
             onChange={(e) => setSearchName(e.target.value)}
             className="w-60 h-9 text-lg md:w-30"
           />
-          <span className={spanIcon}>
+          {/* <span className={spanIcon}>
             <FiSearch className={fiSearch} />
-          </span>
+          </span> */}
         </div>
 
         <Select

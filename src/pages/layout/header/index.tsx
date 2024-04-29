@@ -3,8 +3,8 @@ import { motion } from 'framer-motion'
 import logo from '@/assets/logo.svg'
 
 export const AppHeader = () => (
-  <motion.nav className="relative overflow-hidden shadow-md shadow-[#f1f1ff]">
-    <div className="flex-center py-5 px-20 backdrop-saturate-180">
+  <motion.div className="relative h-full w-full overflow-hidden">
+    <div className="flex-center h-full items-center backdrop-saturate-180">
       <div className="flex-center max-sm:w-full">
         <div className="logo">
           <Link to="/">
@@ -18,5 +18,5 @@ export const AppHeader = () => (
         <Link to="/manage">管理</Link>
       </div>
     </div>
-  </motion.nav>
+  </motion.div>
 )

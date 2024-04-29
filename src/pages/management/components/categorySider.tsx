@@ -71,7 +71,8 @@ function Item({
   ]
 
   return (
-    <div
+    <div className='flex flex-col justify-between'>
+      <div
       ref={setNodeRef}
       className={clsx(
         'relative flex justify-between items-center h-[35px] w-full p-5 rounded-lg hover:bg-slate-200  hover:cursor-pointer'
@@ -105,6 +106,11 @@ function Item({
       >
         <span className="hidden">...</span>
       </Dropdown>
+    </div>
+
+    <div className='foot'>
+        <div>设置</div>
+    </div>
     </div>
   )
 }
