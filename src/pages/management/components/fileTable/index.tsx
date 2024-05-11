@@ -13,14 +13,14 @@ import { formatBytes } from '@cyf-super/utils'
 import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
 import { toast } from 'sonner'
-import { CategoryModal, DeleteModal, UpdateModal } from './Modals'
-import { useGetFile, useHandleFile } from '../hooks/useFiles'
+import { CategoryModal, DeleteModal, UpdateModal } from '../modals'
+import { useGetFile, useHandleFile } from '../../hooks/useFiles'
 import { sliceNameType } from '@/utils/files'
 import { setSelectIds } from '@/store/slices/fileslice'
 import { UploadProvider } from '@/context/UploadProvider'
 import { UploadDrawer } from '@/components/uploadDrawer'
-import { useCategory } from '../hooks/useCategory'
-import './fileTable.css'
+import { useCategory } from '../../hooks/useCategory'
+import '../../css/fileTable.css'
 
 export const FileTable = memo(
   forwardRef(() => {
@@ -193,7 +193,7 @@ export const FileTable = memo(
             total: pagination.total,
             pageSize: pagination.pageSize,
             current: pagination.currentPage,
-            onChange 
+            onChange,
           }}
         />
 

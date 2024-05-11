@@ -2,14 +2,16 @@ import { Toaster } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { LayoutMan } from '../layout'
-import { Content } from './tableContent'
+import { TableContent } from './tableContent'
+import Setting from './setting'
 import { CategorySider } from './components/categorySider'
-import './style.css'
+import './css/style.css'
 import { useCategory } from './hooks/useCategory'
 import { getCategories } from '@/api'
 
 export default function Management() {
   const { categoryId } = useParams()
+  const Content = categoryId === 'setting' ? Setting : TableContent
 
   const { formatData } = useCategory()
   const { data } = useQuery({

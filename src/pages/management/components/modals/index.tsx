@@ -1,7 +1,7 @@
 import { FC, useState, ChangeEvent, useEffect } from 'react'
 import { Input, Modal } from 'antd'
 import { toast } from 'sonner'
-import { ParamsType } from '../hooks/useFiles'
+import { ParamsType } from '../../hooks/useFiles'
 import { sliceNameType } from '@/utils/files'
 
 interface BaseModalType {

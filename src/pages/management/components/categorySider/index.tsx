@@ -1,8 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-
 import { Dropdown, MenuProps } from 'antd'
-import { DeleteOutlined, EditOutlined, LaptopOutlined } from '@ant-design/icons'
+import {
+  DeleteOutlined,
+  EditOutlined,
+  LaptopOutlined,
+  SettingOutlined,
+} from '@ant-design/icons'
 import clsx from 'clsx'
 import { useParams } from 'react-router-dom'
 import { memo, useRef } from 'react'
@@ -20,9 +24,9 @@ import {
   useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useCategory } from '../hooks/useCategory'
-import styles from '../index.module.scss'
-import { CategoryModal, DeleteModal } from './Modals'
+import { useCategory } from '../../hooks/useCategory'
+import styles from '../../css/index.module.scss'
+import { CategoryModal, DeleteModal } from '../modals'
 
 interface CategorySiderPropsType {
   data: Category.Data[]
@@ -71,63 +75,66 @@ function Item({
   ]
 
   return (
-    <div className='flex flex-col justify-between'>
+    <div className="">
       <div
-      ref={setNodeRef}
-      className={clsx(
-        'relative flex justify-between items-center h-[35px] w-full p-5 rounded-lg hover:bg-slate-200  hover:cursor-pointer'
-      )}
-      style={
-        categoryId === item.categoryId
-          ? {
-              backgroundColor: '#7131d9',
-              color: '#fff',
-              ...style,
-            }
-          : style
-      }
-      onClick={() => clickMenuItem(item.categoryId)}
-    >
-      <div className="flex items-center" {...attributes} {...listeners}>
-        <LaptopOutlined />
-        <span className="ml-[6px]">{item.name}</span>
-      </div>
-      <Dropdown
-        menu={{
-          items,
-          onClick: ({ key, domEvent }) =>
-            onHandleFile(domEvent, key, item.categoryId),
-          style: {
-            width: '80px',
-          },
-        }}
-        placement="bottom"
-        arrow={{ pointAtCenter: true }}
+        ref={setNodeRef}
+        className={clsx(
+          'relative flex justify-between items-center h-[35px] w-full p-5 rounded-lg hover:bg-slate-200  hover:cursor-pointer'
+        )}
+        style={
+          categoryId === item.categoryId
+            ? {
+                backgroundColor: '#7131d9',
+                color: '#fff',
+                ...style,
+              }
+            : style
+        }
+        onClick={() => clickMenuItem(item.categoryId)}
       >
-        <span className="hidden">...</span>
-      </Dropdown>
-    </div>
-
-    <div className='foot'>
-        <div>设置</div>
-    </div>
+        <div className="flex items-center" {...attributes} {...listeners}>
+          <LaptopOutlined />
+          <span className="ml-[6px]">{item.name}</span>
+        </div>
+        <Dropdown
+          menu={{
+            items,
+            onClick: ({ key, domEvent }) =>
+              onHandleFile(domEvent, key, item.categoryId),
+            style: {
+              width: '80px',
+            },
+          }}
+          placement="bottom"
+          arrow={{ pointAtCenter: true }}
+        >
+          <span className="hidden">...</span>
+        </Dropdown>
+      </div>
     </div>
   )
 }
 
 export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
   const nameRef = useRef('')
+  const { categoryId } = useParams()
 
   const {
     idRef,
-    setShowInputModal,
-    setShowDeleteModal,
     showDeleteModal,
     showInputModal,
+    navigate,
+    setShowInputModal,
+    setShowDeleteModal,
     createCategoryFunc,
     handleDelete,
     clickMenuItem,
   } = useCategory()
+
+  const isSetting = categoryId === 'setting'
+  const onSetting = () => {
+    navigate('/manage/setting')
+  }
 
   const onHandleFile = (event: any, key: string, id: string) => {
     event.stopPropagation()
@@ -163,28 +170,49 @@ export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
 
   return (
     <>
-      <div className={styles.siderItem}>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          {data && (
-            <SortableContext
-              items={data}
-              strategy={verticalListSortingStrategy}
-            >
-              {data.map((item) => (
-                <Item
-                  key={item.categoryId}
-                  item={item}
-                  clickMenuItem={clickMenuItem}
-                  onHandleFile={onHandleFile}
-                />
-              ))}
-            </SortableContext>
-          )}
-        </DndContext>
+      <div
+        className={[
+          styles.siderItem,
+          'flex flex-col justify-between h-full pb-2',
+        ].join(' ')}
+      >
+        <div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            {data && (
+              <SortableContext
+                items={data}
+                strategy={verticalListSortingStrategy}
+              >
+                {data.map((item) => (
+                  <Item
+                    key={item.categoryId}
+                    item={item}
+                    clickMenuItem={clickMenuItem}
+                    onHandleFile={onHandleFile}
+                  />
+                ))}
+              </SortableContext>
+            )}
+          </DndContext>
+        </div>
+        <div className="mb-5">
+          <div
+            className={[
+              'w-full px-4 py-2 flex items-center cursor-pointer text-indigo-500 border-solid border-2',
+              isSetting
+                ? 'border-solid border-[1.5px] rounded-md border-indigo-400'
+                : '',
+            ].join(' ')}
+            onClick={onSetting}
+          >
+            <SettingOutlined />
+            <div className="ml-1">设置</div>
+          </div>
+        </div>
       </div>
       <DeleteModal
         open={showDeleteModal}

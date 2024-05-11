@@ -90,6 +90,7 @@ export const useCategory = () => {
     showDeleteModal,
     createMutation,
     idRef,
+    navigate,
     clickMenuItem,
     formatData,
     setShowDeleteModal,

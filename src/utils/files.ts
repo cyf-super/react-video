@@ -24,3 +24,20 @@ export const getFileName = (file: File.FileType) => {
   const arr = file.name.split('.')
   return [arr.slice(0, -1).join('.'), arr.slice(-1).join('.')]
 }
+
+/**
+ * 文件转化为base64
+ * @param blob
+ * @returns
+ */
+export const blobToBase64 = (blob: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.addEventListener('load', () => {
+      reader.result && resolve(reader.result as string)
+    })
+    reader.addEventListener('error', () => {
+      reject(reader.result)
+    })
+    reader.readAsDataURL(blob)
+  })
