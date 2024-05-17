@@ -1,14 +1,57 @@
-import { useState } from 'react'
-import { SwiperItem } from '@/components/swiper'
+import { useEffect, useRef, useState } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { blobToBase64 } from '@/utils/files'
+import { getSwiperService, uploadSwiperService } from '@/api'
 
 type StatusType = 'editing' | 'loading' | 'default'
 
-const defaultImageNums = 5
+export const defaultImageNums = 10
 
 export function useHomeStting() {
-  const [list, setList] = useState<SwiperItem[]>([])
+  const [list, setList] = useState<Setting.SwiperType[]>([])
   const [status, setSatus] = useState<StatusType>('default')
+  const swiperImages = useRef<File[]>([])
+  const [itemImage, setItemImage] = useState<Setting.SwiperType | null>(null)
+
+  const initListRef = useRef<Setting.SwiperType[]>([])
+
+  const { data } = useQuery({
+    queryFn: getSwiperService,
+    queryKey: ['swiper'],
+  })
+
+  useEffect(() => {
+    if (data?.data.swiper) {
+      initListRef.current = data?.data.swiper
+      setList(data?.data.swiper)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (JSON.stringify(initListRef.current) === JSON.stringify(list)) {
+      setSatus('default')
+    } else {
+      setSatus('editing')
+    }
+  }, [list])
+
+  const uploadSwiperMutation = useMutation({
+    mutationFn: uploadSwiperService,
+    onSuccess: (result) => {
+      if (result.status) {
+        toast.success(result.message)
+      } else {
+        toast.warning(result.message)
+      }
+    },
+    onError: () => {
+      toast.error('删除失败！')
+    },
+    onSettled() {
+      setSatus('default')
+    },
+  })
 
   const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target
@@ -18,27 +61,78 @@ export function useHomeStting() {
       file.type.startsWith('image/')
     )
     const newList = [...list]
-    let arrImage = images
+    swiperImages.current = images
     const needNums = defaultImageNums - list.length
     if (images.length > needNums) {
-      arrImage = images.slice(0, needNums)
+      swiperImages.current = images.slice(0, needNums)
     }
 
-    for (let i = 0; i < arrImage.length; i += 1) {
-      const base64 = await blobToBase64(arrImage[i])
+    for (let i = 0; i < swiperImages.current.length; i += 1) {
+      const base64 = await blobToBase64(swiperImages.current[i])
       newList.push({
-        id: Date.now(),
+        id: `${`${Date.now()}${Math.floor(10000 * Math.random())}`}`,
         src: base64,
+        href: '',
       })
     }
     setList(newList)
     event.target.value = ''
   }
 
+  const onSave = () => {
+    const formData = new FormData()
+    swiperImages.current.forEach((file) => {
+      formData.append('file', file as File)
+    })
+    console.log(swiperImages.current)
+    const formdataList = list.map((item) => ({
+      ...item,
+      src: item.src.startsWith('data:image') ? '' : item.src,
+    }))
+    formData.append('list', JSON.stringify(formdataList))
+    setSatus('loading')
+    uploadSwiperMutation.mutate({ formData, list: formdataList })
+  }
+
+  const onDeleteImage = (id: string) => {
+    const index = list.findIndex((item) => item.id === id)
+    console.log(index)
+    if (index > -1) {
+      const newList = [...list]
+      newList.splice(index, 1)
+      setList(newList)
+    }
+  }
+
+  const onClickImage = (id: string) => {
+    const index = list.findIndex((item) => item.id === id)
+    console.log(index)
+    if (index > -1) {
+      setItemImage(list[index])
+    }
+  }
+
+  const onSaveImageHref = () => {
+    const index = list.findIndex((item) => item.id === itemImage?.id)
+    console.log(index)
+    if (index > -1 && itemImage) {
+      setList((newlist) => {
+        newlist[index].href = itemImage.href
+        return newlist
+      })
+    }
+  }
+
   return {
+    itemImage,
     list,
     status,
+    onSave,
     setList,
+    setItemImage,
+    onClickImage,
     onFileChange,
+    onDeleteImage,
+    onSaveImageHref,
   }
 }

@@ -38,7 +38,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '^/(api|image|video|ffmpeg)': {
+      '^/(api|image|video|ffmpeg|swiper)': {
         target: 'http://localhost:3000',
         changeOrigin: true,
       },

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React from 'react'
-import { Button, Tabs } from 'antd'
+import { Button, Input, Tabs } from 'antd'
 import { SwiperComponent } from '@/components/swiper'
 import { SortableList } from '@/components/sortable'
 import { SortSwiperItem, ImageItem } from './components/sortSwiperImage'
-import { useHomeStting } from './hooks/useSetting'
+import { defaultImageNums, useHomeStting } from './hooks/useSetting'
 
 const onChangeTag = (key: string) => {
   console.log(key)
@@ -40,7 +40,18 @@ export default function Setting() {
 }
 
 function HomeSetting() {
-  const { list, status, setList, onFileChange } = useHomeStting()
+  const {
+    itemImage,
+    list,
+    status,
+    setList,
+    setItemImage,
+    onFileChange,
+    onSave,
+    onDeleteImage,
+    onClickImage,
+    onSaveImageHref,
+  } = useHomeStting()
 
   return (
     <div className="">
@@ -49,7 +60,7 @@ function HomeSetting() {
         {list.length ? (
           <SwiperComponent list={list} />
         ) : (
-          <div className="w-9/12 h-auto aspect-video">无轮播图</div>
+          <div className="w-9/12 h-auto aspect-video text-xl">无轮播图</div>
         )}
 
         {/* 预览模块 */}
@@ -59,13 +70,17 @@ function HomeSetting() {
             items={list}
             onChange={setList}
             renderItem={(item) => (
-              <SortSwiperItem id={item.id}>
-                <ImageItem item={item} />
+              <SortSwiperItem id={item.id} key={item.id}>
+                <ImageItem
+                  item={item}
+                  onDelete={onDeleteImage}
+                  onClickItem={onClickImage}
+                />
               </SortSwiperItem>
             )}
           />
 
-          {list.length < 5 && (
+          {list.length < defaultImageNums && (
             <div className="relative w-[100px] h-[100px] text-[50px] text-indigo-500 leading-[95px] text-center border-solid border-[1.5px] rounded-2xl border-indigo-400">
               <input
                 type="file"
@@ -78,6 +93,30 @@ function HomeSetting() {
             </div>
           )}
         </div>
+
+        <div className="h-20">
+          {itemImage ? (
+            <>
+              <Input
+                value={itemImage.href}
+                onChange={(e) =>
+                  setItemImage({
+                    ...itemImage,
+                    href: e.target.value,
+                  })
+                }
+              />
+              <div className="mt-2">
+                <Button className="mr-2" onClick={() => setItemImage(null)}>
+                  取消
+                </Button>
+                <Button type="primary" onClick={onSaveImageHref}>
+                  确定
+                </Button>
+              </div>
+            </>
+          ) : null}
+        </div>
       </section>
 
       <div className="mt-5">
@@ -86,6 +125,7 @@ function HomeSetting() {
           type="primary"
           loading={status === 'loading'}
           disabled={status === 'default'}
+          onClick={onSave}
         >
           保存
         </Button>

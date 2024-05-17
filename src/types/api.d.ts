@@ -105,3 +105,28 @@ declare namespace File {
     message: string
   }
 }
+declare namespace Setting {
+  interface SwiperType {
+    id: string
+    src: string
+    href?: string
+  }
+
+  interface GetSwiperReponse {
+    code: number
+    status: boolean
+    data: {
+      swiper: SwiperType[]
+    }
+  }
+
+  interface SwiperUploadParams {
+    formData: FormData
+    list: SwiperType[]
+  }
+  interface SwiperUploadResponse {
+    data: any
+    message: string
+    status: boolean
+  }
+}

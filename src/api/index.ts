@@ -22,3 +22,4 @@ export const uploadVideoService = async (params: Uplaod.Params) =>
 
 export * from './category'
 export * from './files'
+export * from './setting'
