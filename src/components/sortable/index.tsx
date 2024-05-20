@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, createContext, CSSProperties } from 'react'
 import type { PropsWithChildren, ReactNode } from 'react'
 import {
   DndContext,
@@ -9,12 +9,19 @@ import {
   DragOverlay,
   defaultDropAnimationSideEffects,
 } from '@dnd-kit/core'
-import type { Active, UniqueIdentifier, DropAnimation } from '@dnd-kit/core'
+import type {
+  Active,
+  UniqueIdentifier,
+  DropAnimation,
+  DraggableSyntheticListeners,
+} from '@dnd-kit/core'
 import {
   SortableContext,
   arrayMove,
+  useSortable,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 interface BaseItem {
   id: UniqueIdentifier
@@ -91,5 +98,54 @@ export function SortableList<T extends BaseItem>({
         {activeItem ? renderItem(activeItem) : null}
       </SortableOverlay>
     </DndContext>
+  )
+}
+
+interface ItemProps {
+  id: UniqueIdentifier
+}
+
+interface Context {
+  attributes: Record<string, any>
+  listeners: DraggableSyntheticListeners
+  ref(node: HTMLElement | null): void
+}
+
+export const SortableItemContext = createContext<Context>({
+  attributes: {},
+  listeners: undefined,
+  ref() {},
+})
+
+export function SortSwiperItem({ children, id }: PropsWithChildren<ItemProps>) {
+  const {
+    attributes,
+    isDragging,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id })
+  const context = useMemo(
+    () => ({
+      attributes,
+      listeners,
+      ref: setActivatorNodeRef,
+    }),
+    [attributes, listeners, setActivatorNodeRef]
+  )
+  const style: CSSProperties = {
+    opacity: isDragging ? 0.4 : undefined,
+    transform: CSS.Translate.toString(transform),
+    transition,
+  }
+
+  return (
+    <SortableItemContext.Provider value={context}>
+      <li ref={setNodeRef} style={style}>
+        {children}
+      </li>
+    </SortableItemContext.Provider>
   )
 }

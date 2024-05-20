@@ -24,4 +24,8 @@
   .gray-border {
     @apply border border-[#E5E5E6] border-solid rounded-md;
   }
+
+  .green-success {
+    @apply bg-green border-green;
+  }
 }

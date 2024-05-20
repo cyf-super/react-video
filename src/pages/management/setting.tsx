@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React from 'react'
 import { Button, Input, Tabs } from 'antd'
+import { DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
 import { SwiperComponent } from '@/components/swiper'
-import { SortableList } from '@/components/sortable'
-import { SortSwiperItem, ImageItem } from './components/sortSwiperImage'
+import { SortSwiperItem, SortableList } from '@/components/sortable'
+import { ImageItem } from './components/sortSwiperImage'
 import { defaultImageNums, useHomeStting } from './hooks/useSetting'
 
 const onChangeTag = (key: string) => {
@@ -64,7 +64,7 @@ function HomeSetting() {
         )}
 
         {/* 预览模块 */}
-        <div className="flex mt-3">
+        <div className="flex mt-3 flex-shrink-0 flex-nowrap">
           <SortableList
             classnames="flex"
             items={list}
@@ -73,9 +73,25 @@ function HomeSetting() {
               <SortSwiperItem id={item.id} key={item.id}>
                 <ImageItem
                   item={item}
-                  onDelete={onDeleteImage}
-                  onClickItem={onClickImage}
-                />
+                  addBorder={!!(itemImage && itemImage.id === item.id)}
+                >
+                  <>
+                    <PlusSquareOutlined
+                      className="absolute top-2 left-2 scale-125"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onClickImage(item.id)
+                      }}
+                    />
+                    <DeleteOutlined
+                      className="absolute top-2 right-2 scale-125"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onDeleteImage(item.id)
+                      }}
+                    />
+                  </>
+                </ImageItem>
               </SortSwiperItem>
             )}
           />
@@ -94,10 +110,12 @@ function HomeSetting() {
           )}
         </div>
 
-        <div className="h-20">
+        <div className="h-40">
           {itemImage ? (
             <>
               <Input
+                placeholder="设置跳转链接"
+                className="mt-6 w-80"
                 value={itemImage.href}
                 onChange={(e) =>
                   setItemImage({
@@ -106,17 +124,18 @@ function HomeSetting() {
                   })
                 }
               />
-              <div className="mt-2">
-                <Button className="mr-2" onClick={() => setItemImage(null)}>
+              <div className="my-4">
+                <Button className="mr-3" onClick={() => setItemImage(null)}>
                   取消
                 </Button>
-                <Button type="primary" onClick={onSaveImageHref}>
+                <Button className="green-success" onClick={onSaveImageHref}>
                   确定
                 </Button>
               </div>
             </>
           ) : null}
         </div>
+        <hr />
       </section>
 
       <div className="mt-5">

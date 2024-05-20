@@ -19,11 +19,12 @@ export default {
         '2xl': '8rem',
       },
     },
-    // colors: {
-    //   // shallowPurple: '#9555ff',
-    //   // deepPurple: '#7131d9',
-    //   // gray: '#E5E5E6',
-    // },
+    colors: {
+      green: '#13ce66',
+      // shallowPurple: '#9555ff',
+      // deepPurple: '#7131d9',
+      // gray: '#E5E5E6',
+    },
   },
   plugins: [],
 }

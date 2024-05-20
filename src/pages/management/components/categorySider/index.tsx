@@ -84,7 +84,7 @@ function Item({
         style={
           categoryId === item.categoryId
             ? {
-                backgroundColor: '#7131d9',
+                backgroundColor: '#1667cb',
                 color: '#fff',
                 ...style,
               }

@@ -23,12 +23,18 @@ export function useHomeStting() {
 
   useEffect(() => {
     if (data?.data.swiper) {
-      initListRef.current = data?.data.swiper
+      initListRef.current = structuredClone(data.data.swiper)
       setList(data?.data.swiper)
     }
   }, [data])
 
   useEffect(() => {
+    console.log(
+      '1111',
+      initListRef.current,
+      list,
+      JSON.stringify(initListRef.current) === JSON.stringify(list)
+    )
     if (JSON.stringify(initListRef.current) === JSON.stringify(list)) {
       setSatus('default')
     } else {
@@ -113,14 +119,14 @@ export function useHomeStting() {
   }
 
   const onSaveImageHref = () => {
-    const index = list.findIndex((item) => item.id === itemImage?.id)
-    console.log(index)
+    const newlist = [...list]
+    const index = newlist.findIndex((item) => item.id === itemImage?.id)
+    console.log(index, (newlist[index].href = itemImage?.href), newlist)
     if (index > -1 && itemImage) {
-      setList((newlist) => {
-        newlist[index].href = itemImage.href
-        return newlist
-      })
+      newlist[index].href = itemImage.href
+      setList(newlist)
     }
+    setItemImage(null)
   }
 
   return {
