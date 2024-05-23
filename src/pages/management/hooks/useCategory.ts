@@ -1,20 +1,26 @@
-import { useCallback, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import {
   createCategory,
   deleteCategory,
   getCategories,
+  swapCategory,
   updateCategory,
 } from '@/api'
 import { queryClient } from '@/queryClient/index'
 
 export const useCategory = () => {
   const navigate = useNavigate()
+  const { categoryId } = useParams()
+
+  const [categoryList, setCategoryList] = useState<Category.Data[]>([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showInputModal, setShowInputModal] = useState(false)
+
   const idRef = useRef('')
+  const isSetting = categoryId === 'setting'
 
   const formatData = useCallback(
     (key: string) =>
@@ -23,10 +29,25 @@ export const useCategory = () => {
         if (!key) {
           navigate(`/manage/${firstCategoryId}`)
         }
-        return data.data.categories
+        return data.data.categories.map((categoriy) => ({
+          ...categoriy,
+          id: categoriy.categoryId,
+        }))
       },
     []
   )
+
+  const { data } = useQuery({
+    queryKey: ['category'],
+    queryFn: getCategories,
+    select: formatData(categoryId as string),
+  })
+
+  useEffect(() => {
+    if (data) {
+      setCategoryList(structuredClone(data))
+    }
+  }, [data])
 
   const createMutation = useMutation({
     mutationFn: (name: string) => createCategory(name),
@@ -64,15 +85,26 @@ export const useCategory = () => {
     },
   })
 
+  const swapMutation = useMutation({
+    mutationFn: (categoryIds: string[]) => swapCategory(categoryIds),
+    onSuccess(result) {
+      if (!result.status) {
+        toast.error(result.message)
+      }
+    },
+  })
+
   const clickMenuItem = (key: string = '') => {
     navigate(`/manage/${key}`)
   }
 
+  // 删除类别
   const handleDelete = () => {
     deleteMutation.mutate(idRef.current)
     setShowDeleteModal(false)
   }
 
+  // 创建类别
   const createCategoryFunc = (name?: string) => {
     if (!name?.trim()) {
       toast.warning('名称不能为空~')
@@ -85,11 +117,21 @@ export const useCategory = () => {
     setShowInputModal(false)
   }
 
+  // 拖拽交换顺序
+  const onChangeCateory = (list: Category.Data[]) => {
+    setCategoryList(list)
+    const ids = list.map((item) => item.categoryId)
+    swapMutation.mutate(ids)
+  }
+
   return {
     showInputModal,
     showDeleteModal,
     createMutation,
     idRef,
+    isSetting,
+    categoryList,
+    onChangeCateory,
     navigate,
     clickMenuItem,
     formatData,

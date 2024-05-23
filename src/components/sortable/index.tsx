@@ -118,6 +118,7 @@ export const SortableItemContext = createContext<Context>({
 })
 
 export function SortSwiperItem({ children, id }: PropsWithChildren<ItemProps>) {
+  console.log('id ', id)
   const {
     attributes,
     isDragging,

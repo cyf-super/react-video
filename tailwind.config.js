@@ -5,8 +5,12 @@ export default {
   content: ['./src/**/*.{tsx,,ts,jsx,js}'],
   theme: {
     extend: {
-      backgroundImage: {
-        // video: image.video,
+      backgroundImage: {},
+      borderColor: {
+        // 在这里添加您需要的边框颜色类
+        primary: '#3490dc',
+        secondary: '#6574cd',
+        danger: '#e3342f',
       },
     },
     container: {

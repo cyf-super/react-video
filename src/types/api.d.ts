@@ -55,7 +55,7 @@ declare namespace Category {
   interface Data {
     categoryId: string
     createdAt: string
-    id: number
+    id: string
     name: string
     updatedAt: string
   }

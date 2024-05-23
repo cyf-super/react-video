@@ -26,8 +26,7 @@ export const deleteCategory = (categoryId: string) =>
   })
 
 // 交换类别位置
-export const changeCategory = (categoryId1: string, categoryId2: string) =>
-  request.put<Category.Response, Category.Response>('/file-Category/seat', {
-    categoryId1,
-    categoryId2,
+export const swapCategory = (categoryIds: string[]) =>
+  request.post<Category.Response, Category.Response>('/swap-category', {
+    categoryIds,
   })

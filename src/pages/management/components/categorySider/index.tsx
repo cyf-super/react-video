@@ -7,30 +7,16 @@ import {
   LaptopOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
-import clsx from 'clsx'
 import { useParams } from 'react-router-dom'
-import { memo, useRef } from 'react'
-import {
-  DndContext,
-  useSensors,
-  TouchSensor,
-  useSensor,
-  MouseSensor,
-  closestCenter,
-} from '@dnd-kit/core'
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  useSortable,
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import { memo, useContext, useRef } from 'react'
 import { useCategory } from '../../hooks/useCategory'
 import styles from '../../css/index.module.scss'
 import { CategoryModal, DeleteModal } from '../modals'
-
-interface CategorySiderPropsType {
-  data: Category.Data[]
-}
+import {
+  SortSwiperItem,
+  SortableItemContext,
+  SortableList,
+} from '@/components/sortable'
 
 function Item({
   item,
@@ -43,15 +29,7 @@ function Item({
 }) {
   const { categoryId } = useParams()
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.categoryId })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
-
-  console.log('style ', style, attributes, listeners)
+  const { attributes, listeners, ref } = useContext(SortableItemContext)
 
   const items: MenuProps['items'] = [
     {
@@ -75,54 +53,51 @@ function Item({
   ]
 
   return (
-    <div className="">
-      <div
-        ref={setNodeRef}
-        className={clsx(
-          'relative flex justify-between items-center h-[35px] w-full p-5 rounded-lg hover:bg-slate-200  hover:cursor-pointer'
-        )}
-        style={
-          categoryId === item.categoryId
-            ? {
-                backgroundColor: '#1667cb',
-                color: '#fff',
-                ...style,
-              }
-            : style
-        }
-        onClick={() => clickMenuItem(item.categoryId)}
-      >
-        <div className="flex items-center" {...attributes} {...listeners}>
-          <LaptopOutlined />
-          <span className="ml-[6px]">{item.name}</span>
-        </div>
-        <Dropdown
-          menu={{
-            items,
-            onClick: ({ key, domEvent }) =>
-              onHandleFile(domEvent, key, item.categoryId),
-            style: {
-              width: '80px',
-            },
-          }}
-          placement="bottom"
-          arrow={{ pointAtCenter: true }}
-        >
-          <span className="hidden">...</span>
-        </Dropdown>
+    <div
+      className="relative flex justify-between items-center h-[35px] w-full p-5 rounded-lg hover:bg-slate-200  hover:cursor-pointer"
+      style={
+        categoryId === item.categoryId
+          ? {
+              backgroundColor: '#1667cb',
+              color: '#fff',
+            }
+          : {}
+      }
+      {...attributes}
+      onClick={() => clickMenuItem(item.categoryId)}
+    >
+      <div className="flex items-center">
+        <LaptopOutlined ref={ref} {...listeners} />
+        <span className="ml-[6px]">{item.name}</span>
       </div>
+      <Dropdown
+        menu={{
+          items,
+          onClick: ({ key, domEvent }) =>
+            onHandleFile(domEvent, key, item.categoryId),
+          style: {
+            width: '80px',
+          },
+        }}
+        placement="bottom"
+        arrow={{ pointAtCenter: true }}
+      >
+        <span className="hidden">...</span>
+      </Dropdown>
     </div>
   )
 }
 
-export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
+export const CategorySider = memo(() => {
   const nameRef = useRef('')
-  const { categoryId } = useParams()
 
   const {
     idRef,
     showDeleteModal,
     showInputModal,
+    categoryList,
+    isSetting,
+    onChangeCateory,
     navigate,
     setShowInputModal,
     setShowDeleteModal,
@@ -131,7 +106,6 @@ export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
     clickMenuItem,
   } = useCategory()
 
-  const isSetting = categoryId === 'setting'
   const onSetting = () => {
     navigate('/manage/setting')
   }
@@ -141,30 +115,11 @@ export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
     idRef.current = id
     if (key === 'edit') {
       setShowInputModal(true)
-      const name = data?.find((item) => item.categoryId === id)?.name || ''
+      const name =
+        categoryList?.find((item) => item.categoryId === id)?.name || ''
       nameRef.current = name
     } else {
       setShowDeleteModal(true)
-    }
-  }
-
-  const sensors = useSensors(
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 250,
-        tolerance: 5,
-      },
-    }),
-    useSensor(MouseSensor)
-  )
-
-  const handleDragEnd = (event: { active: any; over: any; delta: any }) => {
-    const { active, over, delta } = event
-    console.log('active, over, delta ', active, over, delta)
-    if (active.id !== over.id) {
-      // console.log(id)
-    } else if (Math.abs(delta.x) > over.rect.width) {
-      console.log(12)
     }
   }
 
@@ -177,7 +132,20 @@ export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
         ].join(' ')}
       >
         <div>
-          <DndContext
+          <SortableList
+            items={categoryList}
+            onChange={onChangeCateory}
+            renderItem={(item) => (
+              <SortSwiperItem id={item.categoryId} key={item.categoryId}>
+                <Item
+                  item={item}
+                  clickMenuItem={clickMenuItem}
+                  onHandleFile={onHandleFile}
+                />
+              </SortSwiperItem>
+            )}
+          />
+          {/* <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
@@ -197,7 +165,7 @@ export const CategorySider = memo(({ data }: CategorySiderPropsType) => {
                 ))}
               </SortableContext>
             )}
-          </DndContext>
+          </DndContext> */}
         </div>
         <div className="mb-5">
           <div
