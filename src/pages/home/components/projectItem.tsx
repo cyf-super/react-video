@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion'
 import { openNewTag } from '@cyf-super/utils'
 import dayjs from 'dayjs'
-import { useSelector } from 'react-redux'
 import { FormatFileDataType } from '@/utils/type'
 import { sliceNameType } from '@/utils/files'
-import { selectCateGory } from '@/store/slices/fileslice'
+import { fileStore } from '@/store/fileStore'
 
 type CateGoryMapType = { [key: string]: string }
 
@@ -15,8 +14,8 @@ export const Card = ({ file }: { file: FormatFileDataType }) => {
     openNewTag(url)
   }
 
-  const cateGories = useSelector(selectCateGory)
-  const cateGoryMap = cateGories.reduce((pre, item) => {
+  const { categories } = fileStore()
+  const cateGoryMap = categories.reduce((pre, item) => {
     pre[item.id] = item.label
     return pre
   }, {} as CateGoryMapType)

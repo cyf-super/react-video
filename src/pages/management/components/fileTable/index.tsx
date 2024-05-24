@@ -11,21 +11,21 @@ import { useParams } from 'react-router-dom'
 import type { ColumnsType } from 'antd/es/table'
 import { formatBytes } from '@cyf-super/utils'
 import dayjs from 'dayjs'
-import { useDispatch } from 'react-redux'
 import { toast } from 'sonner'
 import { CategoryModal, DeleteModal, UpdateModal } from '../modals'
 import { useGetFile, useHandleFile } from '../../hooks/useFiles'
 import { sliceNameType } from '@/utils/files'
-import { setSelectIds } from '@/store/slices/fileslice'
 import { UploadProvider } from '@/context/UploadProvider'
 import { UploadDrawer } from '@/components/uploadDrawer'
 import { useCategory } from '../../hooks/useCategory'
 import '../../css/fileTable.css'
+import { fileStore } from '@/store/fileStore'
 
 export const FileTable = memo(
   forwardRef(() => {
     const { categoryId } = useParams()
-    const dispatch = useDispatch()
+
+    const { setSelectIds } = fileStore()
 
     const [popver, showPopver] = useState(false)
     const [open, showModal] = useState(false)
@@ -157,7 +157,7 @@ export const FileTable = memo(
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
       setSelectedRowKeys(newSelectedRowKeys)
-      dispatch(setSelectIds(newSelectedRowKeys))
+      setSelectIds(newSelectedRowKeys as string[])
     }
     const rowSelection = {
       selectedRowKeys,

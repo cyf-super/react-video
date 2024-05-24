@@ -1,20 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
 import { useParams } from 'react-router-dom'
 import { getFilesService, deleteFilesService, updateFileService } from '@/api'
 import { formatFileData } from '@/utils/files'
-import {
-  removeFile,
-  addFiles,
-  selectFileIds,
-  selectFiles,
-  setSelectIds,
-} from '@/store/slices/fileslice'
 import { GetFunctionParams } from '@/utils/type'
 import { queryClient } from '@/queryClient'
+import { fileStore } from '@/store/fileStore'
 
 export type FileDataType = Pick<
   File.FileType,
@@ -40,13 +32,13 @@ interface DeleteParamsType {
  * @returns
  */
 const useGetFile = ({ categoryId }: GetFileType) => {
+  const {addFiles} = fileStore()
   const [files, setFiles] = useState<File.FileType[]>([])
   const [pagination, setPagination] = useState({
     total: 0,
     pageSize: 10,
     currentPage: 1,
   })
-  const dispatch = useDispatch()
   const { data, isLoading } = useQuery({
     queryKey: [
       'getFile',
@@ -66,14 +58,14 @@ const useGetFile = ({ categoryId }: GetFileType) => {
   useEffect(() => {
     if (data) {
       const newData = formatFileData(data.data.files)
-      dispatch(addFiles(newData))
+      addFiles(newData)
       setPagination({
         ...pagination,
         total: data.data?.count,
       })
       setFiles(newData)
     }
-  }, [data, dispatch])
+  }, [data])
 
   const onChange = (page: number, pageSize: number) => {
     setPagination({
@@ -97,9 +89,9 @@ const useGetFile = ({ categoryId }: GetFileType) => {
  */
 const useHandleFile = () => {
   const { categoryId } = useParams()
-  const dispatch = useDispatch()
-  const fileIds = useSelector(selectFileIds)
-  const files = useSelector(selectFiles)
+  
+  const { removeFile, files, setSelectIds, } = fileStore()
+  const fileIds = files.map(file => file.id)
 
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showBatchDeleteModal, setShowBatchDeleteModal] = useState(false)
@@ -142,7 +134,7 @@ const useHandleFile = () => {
 
   // 删除文件
   const deleteFile = (file: File.FileType) => {
-    dispatch(removeFile(file.fileId))
+    removeFile(file.fileId)
     setShowDeleteModal(false)
     deleteMutation.mutate({
       fileIds: [file.fileId],
@@ -158,7 +150,7 @@ const useHandleFile = () => {
       }
     })
     setShowBatchDeleteModal(false)
-    dispatch(setSelectIds([]))
+    setSelectIds([])
     deleteMutation.mutate({
       fileIds,
       fileNames,
