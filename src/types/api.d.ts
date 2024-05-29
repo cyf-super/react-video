@@ -1,6 +1,18 @@
 interface PublicResponse {
   status: boolean
   code: string
+  message?: string
+}
+
+interface ResponseT<T> extends PublicResponse, T {}
+
+declare namespace User {
+  interface InfoType {
+    username: string
+    nickname: string
+    password: string
+    picture: string
+  }
 }
 
 declare namespace Login {
@@ -112,9 +124,8 @@ declare namespace Setting {
     href?: string
   }
 
-  interface GetSwiperReponse {
-    code: number
-    status: boolean
+  boolean
+  interface GetSwiperReponse extends PublicResponse {
     data: {
       swiper: SwiperType[]
     }
@@ -124,9 +135,15 @@ declare namespace Setting {
     formData: FormData
     list: SwiperType[]
   }
-  interface SwiperUploadResponse {
+  interface SwiperUploadResponse extends PublicResponse {
     data: any
-    message: string
-    status: boolean
   }
+
+  interface UserInfoParams {
+    nickname?: string
+    picture?: string
+    password?: string
+  }
+
+  interface UserInfoResponse extends PublicResponse {}
 }

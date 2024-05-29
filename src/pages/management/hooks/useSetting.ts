@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { blobToBase64 } from '@/utils/files'
 import { getSwiperService, uploadSwiperService } from '@/api'
+import { isBase64 } from '@/utils/tools'
 
 type StatusType = 'editing' | 'loading' | 'default'
 
@@ -29,12 +30,6 @@ export function useHomeStting() {
   }, [data])
 
   useEffect(() => {
-    console.log(
-      '1111',
-      initListRef.current,
-      list,
-      JSON.stringify(initListRef.current) === JSON.stringify(list)
-    )
     if (JSON.stringify(initListRef.current) === JSON.stringify(list)) {
       setSatus('default')
     } else {
@@ -93,7 +88,7 @@ export function useHomeStting() {
     console.log(swiperImages.current)
     const formdataList = list.map((item) => ({
       ...item,
-      src: item.src.startsWith('data:image') ? '' : item.src,
+      src: isBase64(item.src) ? '' : item.src,
     }))
     formData.append('list', JSON.stringify(formdataList))
     setSatus('loading')
