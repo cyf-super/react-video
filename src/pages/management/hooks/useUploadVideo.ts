@@ -111,12 +111,6 @@ export const useUploadVideo = () => {
       if (!res.status) {
         console.error('上传失败', res, data)
         toast.error('上传失败!')
-        // dispatch({
-        //   type: 'PROGRESS',
-        //   file: <UploadFile>file,
-        //   progress: 100,
-        //   status: false
-        // })
         return
       }
       toast.success('上传成功!')

@@ -16,6 +16,8 @@ type UserDataType = typeof initUserData
 type WebSiteDataType = typeof initWebSiteData
 
 const initUserData = {
+  userId: 0,
+  role: '',
   username: '',
   nickname: '',
   picture: '',
@@ -30,7 +32,7 @@ export const userInfoStore = create<StateType & ActionType>()((set) => ({
   userInfo: initUserData,
   webSite: initWebSiteData,
 
-  setUserInfo(userInfo: UserDataType) {
+  setUserInfo(userInfo: User.InfoType) {
     set({ userInfo })
   },
   setWebSite(info: WebSiteDataType) {
@@ -40,5 +42,5 @@ export const userInfoStore = create<StateType & ActionType>()((set) => ({
 
 const user = LStorage.get(userInfoKey)
 if (user) {
-  userInfoStore.getState().setUserInfo(user as UserDataType)
+  userInfoStore.getState().setUserInfo(user as User.InfoType)
 }

@@ -2,30 +2,34 @@
 import { Button, Input, Tabs } from 'antd'
 import { DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
+import { ChangeEvent, useState } from 'react'
 import { SwiperComponent } from '@/components/swiper'
 import { SortSwiperItem, SortableList } from '@/components/sortable'
 import { ImageItem } from './components/sortSwiperImage'
 import { defaultImageNums, useHomeStting } from './hooks/useSetting'
 import { useInfoSetting } from './hooks/useInfoSetting'
 
-const onChangeTag = (key: string) => {
-  console.log(key)
-}
+export type TabType = 'swiper' | 'userInfo'
 
 const TabOptions = [
   {
-    id: '1',
+    id: 'swiper',
     label: '首页',
     children: HomeSetting,
   },
   {
-    id: '2',
+    id: 'userInfo',
     label: '个人信息',
     children: InfoSetting,
   },
 ]
 
 export default function Setting() {
+  const [tabStatus, setTabStatus] = useState('swiper')
+  const onChangeTag = (key: string) => {
+    console.log(key)
+    setTabStatus(key)
+  }
   return (
     <div className="m-5">
       <Tabs
@@ -34,13 +38,16 @@ export default function Setting() {
         items={TabOptions.map((item) => ({
           label: item.label,
           key: item.id,
-          children: <item.children />,
+          children: <item.children tabStatus={tabStatus} />,
         }))}
       />
     </div>
   )
 }
 
+interface Props {
+  tabStatus?: string
+}
 function HomeSetting() {
   const {
     itemImage,
@@ -159,7 +166,7 @@ function HomeSetting() {
   )
 }
 
-function InfoSetting() {
+function InfoSetting({ tabStatus }: Props) {
   const {
     userInfo,
     website,
@@ -168,7 +175,7 @@ function InfoSetting() {
     onSetUserInfo,
     onAvatarChange,
     onLogoChange,
-  } = useInfoSetting()
+  } = useInfoSetting(tabStatus)
 
   return (
     <div>
@@ -179,7 +186,7 @@ function InfoSetting() {
       >
         <h1 className="text-xl">用户信息</h1>
         <div className="mt-2 text-base">
-          <span>名称</span>
+          <span className="mr-2">名称:</span>
           <span>{userInfo.username}</span>
         </div>
         <div className="mt-2 text-base">
@@ -197,7 +204,7 @@ function InfoSetting() {
         <div className="flex mt-2 text-base">
           <span>新密码</span>
           <Input
-            value={userInfo.verifyPassword}
+            value={userInfo.password}
             onChange={(e) =>
               onSetUserInfo({
                 password: e.target.value.trim(),
@@ -209,10 +216,10 @@ function InfoSetting() {
         <div className="flex mt-2 text-base">
           <span>确认密码</span>
           <Input
-            value={userInfo.password}
+            value={userInfo.verifyPassword}
             onChange={(e) =>
               onSetUserInfo({
-                password: e.target.value.trim(),
+                verifyPassword: e.target.value.trim(),
               })
             }
             className="w-[200px] ml-2"
@@ -220,7 +227,11 @@ function InfoSetting() {
         </div>
         <div className="mt-2 text-base">
           头像
-          <UploadImage src={userInfo.picture} onImageChange={onAvatarChange} />
+          <UploadImage
+            src={userInfo.picture}
+            onImageChange={onAvatarChange}
+            classname="rounded-full"
+          />
         </div>
 
         <div className="mt-3">
@@ -255,12 +266,19 @@ function InfoSetting() {
 function UploadImage({
   onImageChange,
   src,
+  classname,
 }: {
-  onImageChange: () => void
+  onImageChange: (e: ChangeEvent<HTMLInputElement>) => void
   src: string
+  classname?: string
 }) {
   return (
-    <div className="relative w-[100px] h-[100px] text-[50px] text-indigo-500 leading-[95px] text-center border-solid border-[1.5px] rounded-2xl border-indigo-400">
+    <div
+      className={[
+        'relative flex justify-center items-center w-[100px] h-[100px] text-[50px] text-indigo-500 leading-[95px] text-center border-solid border-[1.5px] rounded-2xl border-indigo-400',
+        classname,
+      ].join(' ')}
+    >
       <input
         type="file"
         accept="image/*"
@@ -268,7 +286,15 @@ function UploadImage({
         className="w-full h-full absolute top-0 left-0 opacity-0"
         onChange={onImageChange}
       />
-      {src ? <img src={src} alt="" /> : '+'}
+      {src ? (
+        <img
+          src={src}
+          alt=""
+          className={['object-cover w-full rounded-2xl', classname].join(' ')}
+        />
+      ) : (
+        '+'
+      )}
     </div>
   )
 }

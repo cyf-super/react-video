@@ -8,9 +8,10 @@ interface ResponseT<T> extends PublicResponse, T {}
 
 declare namespace User {
   interface InfoType {
-    username: string
+    userId: number
+    role: string
     nickname: string
-    password: string
+    username: string
     picture: string
   }
 }
@@ -23,12 +24,7 @@ declare namespace Login {
 
   interface Response {
     token: string
-    data: {
-      id: number
-      nickname: string
-      role: string
-      username: string
-    }
+    data: User.InfoType
   }
 }
 
@@ -143,7 +139,10 @@ declare namespace Setting {
     nickname?: string
     picture?: string
     password?: string
+    userId: number
   }
 
-  interface UserInfoResponse extends PublicResponse {}
+  interface UserInfoResponse extends PublicResponse {
+    data: User.InfoType
+  }
 }
