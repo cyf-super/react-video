@@ -27,7 +27,6 @@ const TabOptions = [
 export default function Setting() {
   const [tabStatus, setTabStatus] = useState('swiper')
   const onChangeTag = (key: string) => {
-    console.log(key)
     setTabStatus(key)
   }
   return (
@@ -170,11 +169,15 @@ function InfoSetting({ tabStatus }: Props) {
   const {
     userInfo,
     website,
+    isChangeWebsite,
+    setWebsite,
     onCancleUser,
     onSureUser,
     onSetUserInfo,
     onAvatarChange,
     onLogoChange,
+    onCancleWebsite,
+    onSureWebsite,
   } = useInfoSetting(tabStatus)
 
   return (
@@ -251,12 +254,32 @@ function InfoSetting({ tabStatus }: Props) {
         <div className="text-xl mt-8">网站信息</div>
         <div className="mt-2 text-base">
           <span>首页名称</span>
-          <Input value={website.name} className="w-[200px] ml-2" />
+          <Input
+            value={website.websiteName}
+            onChange={(e) =>
+              setWebsite({
+                ...website,
+                websiteName: e.target.value.trim(),
+              })
+            }
+            className="w-[200px] ml-2"
+          />
         </div>
 
         <div className="mt-2 text-base">
           <div>logo</div>
-          <UploadImage src={website.image} onImageChange={onLogoChange} />
+          <UploadImage src={website.logo} onImageChange={onLogoChange} />
+        </div>
+
+        <div>
+          <Button onClick={onCancleWebsite}>还原</Button>
+          <Button
+            disabled={!isChangeWebsite}
+            type="primary"
+            onClick={onSureWebsite}
+          >
+            确定
+          </Button>
         </div>
       </motion.section>
     </div>

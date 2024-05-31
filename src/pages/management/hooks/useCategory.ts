@@ -9,7 +9,7 @@ import {
   swapCategory,
   updateCategory,
 } from '@/api'
-import { queryClient } from '@/queryClient/index'
+import { queryClient } from '@/queryClient'
 
 export const useCategory = () => {
   const navigate = useNavigate()

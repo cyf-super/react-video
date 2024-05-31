@@ -24,6 +24,14 @@ export const getSwiperService = async () =>
   )
 
 /**
+ * 获取网站信息
+ */
+export const getWebsiteApi = async () =>
+  request.get<Setting.WebsiteInfoResponse, Setting.WebsiteInfoResponse>(
+    'website-info'
+  )
+
+/**
  * 更新用户信息
  * @param params
  * @returns
@@ -31,5 +39,16 @@ export const getSwiperService = async () =>
 export const updateUserInfo = async (params: FormData) =>
   request.post<Setting.UserInfoResponse, Setting.UserInfoResponse>(
     '/user-info',
+    params
+  )
+
+/**
+ * 修改网站信息
+ * @param params
+ * @returns
+ */
+export const updateWebsiteInfApi = async (params: FormData) =>
+  request.post<Setting.WebsiteInfoResponse, Setting.WebsiteInfoResponse>(
+    '/website-info',
     params
   )

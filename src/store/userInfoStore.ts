@@ -9,7 +9,7 @@ type StateType = {
 
 type ActionType = {
   setUserInfo: (userInfo: UserDataType) => void
-  setWebSite: (info: WebSiteDataType) => void
+  setWebsite: (info: WebSiteDataType) => void
 }
 
 type UserDataType = typeof initUserData
@@ -24,8 +24,8 @@ const initUserData = {
 }
 
 const initWebSiteData = {
-  name: '',
-  image: '',
+  websiteName: '',
+  logo: '',
 }
 
 export const userInfoStore = create<StateType & ActionType>()((set) => ({
@@ -35,7 +35,7 @@ export const userInfoStore = create<StateType & ActionType>()((set) => ({
   setUserInfo(userInfo: User.InfoType) {
     set({ userInfo })
   },
-  setWebSite(info: WebSiteDataType) {
+  setWebsite(info: WebSiteDataType) {
     set({ webSite: info })
   },
 }))

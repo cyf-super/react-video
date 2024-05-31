@@ -113,6 +113,7 @@ declare namespace File {
     message: string
   }
 }
+
 declare namespace Setting {
   interface SwiperType {
     id: string
@@ -120,7 +121,6 @@ declare namespace Setting {
     href?: string
   }
 
-  boolean
   interface GetSwiperReponse extends PublicResponse {
     data: {
       swiper: SwiperType[]
@@ -144,5 +144,14 @@ declare namespace Setting {
 
   interface UserInfoResponse extends PublicResponse {
     data: User.InfoType
+  }
+
+  interface Website {
+    websiteName: string
+    logo: string
+  }
+
+  interface WebsiteInfoResponse extends PublicResponse {
+    data: Website
   }
 }
