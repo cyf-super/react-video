@@ -15,9 +15,16 @@ type ActionType = {
 type UserDataType = typeof initUserData
 type WebSiteDataType = typeof initWebSiteData
 
+export enum UserState {
+  none = 0,
+  admin = 1,
+  vip = 2,
+  user = 3,
+}
+
 const initUserData = {
   userId: 0,
-  role: '',
+  role: UserState.none,
   username: '',
   nickname: '',
   picture: '',

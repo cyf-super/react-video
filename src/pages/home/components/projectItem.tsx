@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { openNewTag } from '@cyf-super/utils'
 import dayjs from 'dayjs'
 import { FormatFileDataType } from '@/utils/type'
@@ -57,15 +56,7 @@ export const Card = ({ file }: { file: FormatFileDataType }) => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        ease: 'easeInOut',
-        duration: 0.7,
-        delay: 0.15,
-      }}
-    >
+    <div>
       <div className="rounded-xl shadow-lg hover:shadow-xl cursor-pointer mb-10 sm:mb-0 bg-secondary-light">
         <div className="text-center py-5 mx-5">
           {renderTag()}
@@ -89,6 +80,6 @@ export const Card = ({ file }: { file: FormatFileDataType }) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }

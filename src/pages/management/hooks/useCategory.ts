@@ -64,7 +64,7 @@ export const useCategory = () => {
     mutationFn: ({ id, name }: { id: string; name: string }) =>
       updateCategory(id, name),
     onSuccess: async (result) => {
-      if (result.code === '11001') {
+      if (result.status === false) {
         toast.error(result.message)
         return
       }
@@ -75,7 +75,7 @@ export const useCategory = () => {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteCategory(id),
     onSuccess(result) {
-      if (result.code === '11001') {
+      if (result.status === false) {
         toast.error(result.message)
         return
       }

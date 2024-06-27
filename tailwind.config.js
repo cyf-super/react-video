@@ -29,6 +29,10 @@ export default {
       // deepPurple: '#7131d9',
       // gray: '#E5E5E6',
     },
+    textColor: {
+      white: '#fff',
+      black: '#000',
+    },
   },
   plugins: [],
 }

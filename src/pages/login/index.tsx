@@ -4,10 +4,10 @@ import { Input, Checkbox, Button } from 'antd'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 // import { LoginBC, ModalFrame } from './style'
 // import bgUrl from '../../assets/bc3.jpg'
-import { motion } from 'framer-motion'
 import logo from '../../assets/logo.webp'
 import { storage } from '@/utils/storage'
 import { useLogin } from './hooks/useLogin'
+import { ScaleBox } from '@/components/animation/scaleBox'
 
 function LoginForm() {
   const [checked, setChecked] = useState(storage.get('_checked') || false)
@@ -79,12 +79,7 @@ function LoginForm() {
 
 export default function Login() {
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ ease: 'easeInOut', duration: 0.9, delay: 0.2 }}
-      className="container flex-col-center"
-    >
+    <ScaleBox className="container flex-col-center">
       {/* <LoginBC>
         <img src={bgUrl} alt="" />
       </LoginBC> */}
@@ -101,6 +96,6 @@ export default function Login() {
           <LoginForm />
         </div>
       </div>
-    </motion.section>
+    </ScaleBox>
   )
 }

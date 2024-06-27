@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -32,7 +33,7 @@ interface DeleteParamsType {
  * @returns
  */
 const useGetFile = ({ categoryId }: GetFileType) => {
-  const {addFiles} = fileStore()
+  const { addFiles } = fileStore()
   const [files, setFiles] = useState<File.FileType[]>([])
   const [pagination, setPagination] = useState({
     total: 0,
@@ -89,9 +90,9 @@ const useGetFile = ({ categoryId }: GetFileType) => {
  */
 const useHandleFile = () => {
   const { categoryId } = useParams()
-  
-  const { removeFile, files, setSelectIds, } = fileStore()
-  const fileIds = files.map(file => file.id)
+
+  const { removeFile, files, setSelectIds } = fileStore()
+  const fileIds = files.map((file) => file.id)
 
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showBatchDeleteModal, setShowBatchDeleteModal] = useState(false)

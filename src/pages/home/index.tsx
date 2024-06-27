@@ -1,4 +1,3 @@
-// import { metions } from 'framer-motion'
 import { memo } from 'react'
 import { AppHeader } from '@/pages/layout/header/index'
 import { ProjectGrid } from './components/projectGrid'

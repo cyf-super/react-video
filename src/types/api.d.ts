@@ -9,10 +9,17 @@ interface ResponseT<T> extends PublicResponse, T {}
 declare namespace User {
   interface InfoType {
     userId: number
-    role: string
+    role: number
     nickname: string
     username: string
     picture: string
+  }
+
+  enum State {
+    none = 0, // 未登录
+    admin = 1,
+    vip = 2,
+    user = 3,
   }
 }
 
@@ -122,9 +129,7 @@ declare namespace Setting {
   }
 
   interface GetSwiperReponse extends PublicResponse {
-    data: {
-      swiper: SwiperType[]
-    }
+    data: SwiperType[]
   }
 
   interface SwiperUploadParams {

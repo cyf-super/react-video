@@ -6,6 +6,8 @@ import { Card } from './projectItem'
 import { useCard } from '../hooks/useProject'
 import { debounce } from '@/utils/tools'
 import { queryClient } from '@/queryClient'
+import { ScaleBox } from '@/components/animation/scaleBox'
+import { IntersectionObserver } from '@/components/observer'
 
 const gridDiv = `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6 sm:gap-10`
 
@@ -46,9 +48,13 @@ export const ProjectGrid = memo(() => {
   return (
     <div className="mx-20">
       <HeaderChannel searchName={searchName} setSearchName={setSearchName} />
-      <div className={gridDiv}>
-        {files && files.map((card) => <Card file={card} key={card.fileId} />)}
-      </div>
+      <IntersectionObserver>
+        <ScaleBox className={gridDiv}>
+          {files?.length
+            ? files.map((card) => <Card file={card} key={card.fileId} />)
+            : null}
+        </ScaleBox>
+      </IntersectionObserver>
 
       <div className="text-right my-4">
         <Pagination

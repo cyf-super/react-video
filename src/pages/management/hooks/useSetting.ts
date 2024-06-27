@@ -23,9 +23,9 @@ export function useHomeStting() {
   })
 
   useEffect(() => {
-    if (data?.data.swiper) {
-      initListRef.current = structuredClone(data.data.swiper)
-      setList(data?.data.swiper)
+    if (data?.data) {
+      initListRef.current = structuredClone(data.data)
+      setList(data?.data)
     }
   }, [data])
 
