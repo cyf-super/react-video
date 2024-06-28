@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
 import { useSelect, CategoryOptions } from '../hooks/useProject'
 import { typeGuard } from '@/utils/type'
+import { SlideInUpBox } from '@/components/animation/slideInUpBox'
+import { IntersectionObserver } from '@/components/observer'
 
 const spanIcon = `hidden sm:block bg-blue-100 p-2.5 shadow-sm rounded-xl cursor-pointer`
 
@@ -45,25 +47,31 @@ export const HeaderChannel: FC<HeaderChannelType> = ({
         Search projects by title or filter by category
       </h3>
 
-      <div className="flex justify-between my-8">
-        <div className="flex-center gap-2">
-          <Input
-            placeholder="search"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            className="w-60 h-9 text-lg md:w-30"
-          />
-          {/* <span className={spanIcon}>
+      <div className="flex justify-between my-8 overflow-hidden">
+        <IntersectionObserver>
+          <SlideInUpBox className="flex-center gap-2" xOffset={-300}>
+            <Input
+              placeholder="search"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              className="w-60 h-9 text-lg md:w-30"
+            />
+            {/* <span className={spanIcon}>
             <FiSearch className={fiSearch} />
           </span> */}
-        </div>
+          </SlideInUpBox>
+        </IntersectionObserver>
 
-        <Select
-          value={selectValue}
-          style={{ width: 180 }}
-          onChange={handleChange}
-          options={categores}
-        />
+        <IntersectionObserver>
+          <SlideInUpBox xOffset={300}>
+            <Select
+              value={selectValue}
+              style={{ width: 180 }}
+              onChange={handleChange}
+              options={categores}
+            />
+          </SlideInUpBox>
+        </IntersectionObserver>
       </div>
     </div>
   )

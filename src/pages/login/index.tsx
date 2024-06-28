@@ -79,7 +79,7 @@ function LoginForm() {
 
 export default function Login() {
   return (
-    <ScaleBox className="container flex-col-center">
+    <ScaleBox className="container flex-col-center" easing="linear">
       {/* <LoginBC>
         <img src={bgUrl} alt="" />
       </LoginBC> */}

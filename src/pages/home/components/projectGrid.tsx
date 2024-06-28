@@ -36,6 +36,7 @@ export const ProjectGrid = memo(() => {
   useEffect(() => {
     name.current = searchName
     searchFile()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchName])
 
   const onChange = (page: number, pageSize: number) => {

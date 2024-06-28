@@ -1,6 +1,4 @@
-import { LStorage } from '@cyf-super/utils'
 import { create } from 'zustand'
-import { userInfoKey } from '@/pages/login/hooks/useLogin'
 
 type StateType = {
   userInfo: UserDataType
@@ -46,8 +44,3 @@ export const userInfoStore = create<StateType & ActionType>()((set) => ({
     set({ webSite: info })
   },
 }))
-
-const user = LStorage.get(userInfoKey)
-if (user) {
-  userInfoStore.getState().setUserInfo(user as User.InfoType)
-}

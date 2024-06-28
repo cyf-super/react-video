@@ -1,25 +1,26 @@
-import React, { useMemo, useContext, ReactElement } from 'react'
-
+import { ReactElement, useContext, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { IntersectionContext } from '@/components/observer'
 
-interface ScaleBoxParams {
+type SlideInBoxParams = {
   children: ReactElement | ReactElement[] | null
   duration?: number
+  direction?: 'left' | 'right'
+  xOffset?: number
   easing?: number[] | string
   delayOrder?: number
   [key: string]: any
 }
 
-export const ScaleBox = ({
+export const SlideInUpBox = ({
   children,
+  xOffset = 200,
   delayOrder = 1, // order of appearance
   duration = 0.4,
   easing = [0.42, 0, 0.58, 1], // [number, number, number, number] | "linear" | "easeIn" | "easeOut" | "easeInOut" | "circIn" | "circOut" | "circInOut" | "backIn" | "backOut" | "backInOut" | "anticipate" | EasingFunction;
   ...rest
-}: ScaleBoxParams) => {
+}: SlideInBoxParams) => {
   const { inView } = useContext(IntersectionContext)
-  console.log('ScaleBox ', inView)
 
   const transition = useMemo(
     () => ({
@@ -32,12 +33,13 @@ export const ScaleBox = ({
 
   const variants = {
     hidden: {
-      scale: 0,
+      x: xOffset,
       opacity: 0,
       transition,
     },
     show: {
-      scale: 1,
+      x: 0,
+      y: 0,
       opacity: 1,
       transition,
     },
