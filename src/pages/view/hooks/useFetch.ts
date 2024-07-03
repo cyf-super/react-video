@@ -7,19 +7,18 @@ export const useLoadFile = () => {
   const [notFindFile, setNotFindFile] = useState(false)
   const { fileId } = useParams()
 
-  const { data: file, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['file'],
-    queryFn: () => getFileService(<string>fileId),
+    queryFn: () => getFileService(<string>fileId!),
     onSuccess: (res) => {
-      if ((res as unknown as File.GetFileResponse).code !== 0) {
+      if (!res.status) {
         setNotFindFile(true)
       }
     },
-    select: (res) => (res as unknown as File.GetFileResponse)?.data,
   })
 
   return {
-    file,
+    res: data,
     isLoading,
     notFindFile,
   }

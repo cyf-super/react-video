@@ -21,7 +21,6 @@ export const AppHeader = memo(() => {
   const { role } = userInfo
 
   const onManage = () => {
-    console.log('role ', role)
     if (role === UserState.admin) {
       navigate('/manage')
     }
@@ -29,9 +28,14 @@ export const AppHeader = memo(() => {
 
   return (
     <header className="max-w-screen-xl mx-auto mb-8">
-      <nav className="px-4 sm:px-5 py-12 flex items-center justify-between space-x-12">
+      <nav className="px-4 sm:px-5 py-8 flex items-center justify-between space-x-12">
         <div className="flex items-center space-x-8">
-          <div id="logo" className="flex items-center space-x-2">
+          <div
+            id="logo"
+            role="presentation"
+            className="flex items-center space-x-2"
+            onClick={() => navigate('/')}
+          >
             <img
               src={res?.data.logo || logo}
               className="w-16 h-16"

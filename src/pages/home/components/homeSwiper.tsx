@@ -14,8 +14,8 @@ const HomeSwiper = memo(() => {
   const list = data?.data || []
   return (
     <IntersectionObserver>
-      <FadeInUpBox className="mx-20 mt-10">
-        <SwiperComponent list={list} />
+      <FadeInUpBox className="mx-20 mb-10">
+        <SwiperComponent list={list} className="w-1/4" />
       </FadeInUpBox>
     </IntersectionObserver>
   )

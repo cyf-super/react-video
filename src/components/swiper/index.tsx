@@ -5,7 +5,13 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-export const SwiperComponent = ({ list }: { list: Setting.SwiperType[] }) => {
+export const SwiperComponent = ({
+  list,
+  className = '',
+}: {
+  list: Setting.SwiperType[]
+  className?: string
+}) => {
   const onClickImg = (href?: string) => {
     href && openNewTag(href)
   }
@@ -22,7 +28,10 @@ export const SwiperComponent = ({ list }: { list: Setting.SwiperType[] }) => {
     >
       {list.map((item) => (
         <SwiperSlide
-          className="w-2/4 h-auto aspect-video text-center"
+          className={[
+            'w-2/4 box-border aspect-video text-center',
+            className,
+          ].join(' ')}
           key={item.id}
           onClick={() => onClickImg(item.href)}
         >

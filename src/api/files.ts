@@ -7,7 +7,7 @@ import request from '@/utils/request'
  * @returns
  */
 export const getFileService = (fileId: string) =>
-  request.get<File.FileType, File.FileType>('/file/', {
+  request.get<File.GetFileResponse, File.GetFileResponse>('/file/', {
     params: {
       fileId,
     },

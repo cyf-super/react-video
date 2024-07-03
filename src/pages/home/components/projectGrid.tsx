@@ -48,7 +48,9 @@ export const ProjectGrid = memo(() => {
   }
   return (
     <div className="mx-20">
-      <HeaderChannel searchName={searchName} setSearchName={setSearchName} />
+      {files?.length && (
+        <HeaderChannel searchName={searchName} setSearchName={setSearchName} />
+      )}
       <IntersectionObserver>
         <ScaleBox className={gridDiv}>
           {files?.length

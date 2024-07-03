@@ -11,7 +11,8 @@ const videoOptions = {
 
 export const PlyrVideo = () => {
   const { ref, loadVideo } = useVideo()
-  const { file, isLoading } = useLoadFile()
+  const { res, isLoading } = useLoadFile()
+  const { data: file } = res!
   useEffect(() => {
     if (file?.path) {
       loadVideo(file.path)

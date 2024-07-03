@@ -6,9 +6,9 @@ import './style.module.css'
 const { Header, Sider, Content } = Layout
 const headerStyle: React.CSSProperties = {
   textAlign: 'center',
-  height: 80,
-  paddingInline: 50,
-  lineHeight: '48px',
+  height: 128,
+  // paddingInline: 50,
+  // lineHeight: '48px',
   backgroundColor: '#fff',
 }
 
